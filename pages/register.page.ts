@@ -57,21 +57,31 @@ export class RegisterPage extends BasePage {
     await this.emailInput.fill(data.email);
     await this.passwordInput.fill(data.password);
     await this.repeatPasswordInput.fill(data.repeatPassword);
-    await this.securityQuestionSelect.click({ force: true });
-    // const wrapper = this.securityQuestionSelect.locator(
-    //   'xpath=ancestor::div[contains(@class, "mat-mdc-text-field-wrapper")][1]',
-    // );
 
-    // await expect(wrapper).toBeVisible();
-    // await wrapper.click();
-    const listbox = this.page.getByRole("listbox", {
-      name: "Selection list for the security question",
-    });
-    await expect(listbox).toBeVisible();
-    // await listbox.waitFor({ state: "visible", timeout: 5000 });
+    // Пробуем mouse.click по form-field (обходит label)
+    const formField = this.page
+      .locator("mat-form-field")
+      .filter({ has: this.securityQuestionSelect });
+    const box = await formField.boundingBox();
+    if (box) {
+      await this.page.mouse.click(
+        box.x + box.width * 0.85,
+        box.y + box.height * 0.55
+      );
+    }
 
-    await expect(this.page.getByRole("option").first()).toBeVisible();
-    await this.page.getByRole("option").first().click();
+    // Ждём появления опции. Если не появилась — fallback: нативный DOM click
+    const option = this.page.locator(".mat-mdc-option, .mat-option").first();
+    try {
+      await option.waitFor({ state: "visible", timeout: 2000 });
+    } catch {
+      await this.securityQuestionSelect.evaluate((el: HTMLElement) =>
+        el.click()
+      );
+      await option.waitFor({ state: "visible", timeout: 8000 });
+    }
+    await option.click();
+
     await this.securityAnswerInput.fill(data.securityAnswer);
   }
 

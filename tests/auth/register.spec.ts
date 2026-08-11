@@ -1,6 +1,9 @@
 import { expect, test } from "@playwright/test";
 import { RegisterPage } from "../../pages/register.page";
 import { generateRigisterData } from "../../data/register.data";
+
+// test.describe.configure({ mode: "serial" });
+
 test.describe("Register Page", () => {
   test("should navigate to the register page", async ({ page }) => {
     const registerPage = new RegisterPage(page);
