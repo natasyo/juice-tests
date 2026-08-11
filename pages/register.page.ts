@@ -4,12 +4,14 @@ import { RegisterType } from "../types/register.type";
 
 export class RegisterPage extends BasePage {
   readonly url: string = "http://localhost:3000/#/register";
+  readonly loginUrl:string="http://localhost:3000/#/login"
   readonly emailInput: Locator;
   readonly passwordInput: Locator;
   readonly repeatPasswordInput: Locator;
   readonly securityQuestionSelect: Locator;
   readonly securityAnswerInput: Locator;
   readonly submitButton: Locator;
+  readonly registrationForm:Locator
   constructor(page: Page) {
     super(page);
 
@@ -24,6 +26,7 @@ export class RegisterPage extends BasePage {
     );
     this.securityAnswerInput = page.getByLabel("Answer");
     this.submitButton = page.locator("#registerButton");
+    this.registrationForm=page.locator("#registration-form")
   }
 
   async open() {
@@ -58,31 +61,30 @@ export class RegisterPage extends BasePage {
     await this.passwordInput.fill(data.password);
     await this.repeatPasswordInput.fill(data.repeatPassword);
 
-    // Пробуем mouse.click по form-field (обходит label)
-    const formField = this.page
-      .locator("mat-form-field")
-      .filter({ has: this.securityQuestionSelect });
-    const box = await formField.boundingBox();
-    if (box) {
-      await this.page.mouse.click(
-        box.x + box.width * 0.85,
-        box.y + box.height * 0.55
-      );
-    }
-
-    // Ждём появления опции. Если не появилась — fallback: нативный DOM click
-    const option = this.page.locator(".mat-mdc-option, .mat-option").first();
-    try {
-      await option.waitFor({ state: "visible", timeout: 2000 });
-    } catch {
-      await this.securityQuestionSelect.evaluate((el: HTMLElement) =>
-        el.click()
-      );
-      await option.waitFor({ state: "visible", timeout: 8000 });
-    }
-    await option.click();
+    await this.selectSecurityQuestion();
 
     await this.securityAnswerInput.fill(data.securityAnswer);
+  }
+
+  private async selectSecurityQuestion() {
+    const option = this.page.getByRole("option").first();
+
+    for (let attempt = 0; attempt < 3; attempt++) {
+      // нативный DOM click открывает mat-select надёжно: без координат,
+      // без перехвата floating label и без зависимости от таймингов layout
+      await this.securityQuestionSelect.evaluate((el: HTMLElement) =>
+        el.click(),
+      );
+      try {
+        await option.waitFor({ state: "visible", timeout: 1500 });
+        await option.click();
+        return;
+      } catch {
+        // Панель не открылась (или toggle закрыл её) — закрываем и пробуем снова
+        await this.page.keyboard.press("Escape").catch(() => {});
+      }
+    }
+    throw new Error("Security question dropdown did not open");
   }
 
   // async getQuestions() {

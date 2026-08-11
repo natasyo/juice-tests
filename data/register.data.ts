@@ -4,7 +4,7 @@ import { RegisterType } from "../types/register.type";
 export function generateRigisterData(
   ovveride: Partial<RegisterType> = {},
 ): RegisterType {
-  const password = faker.internet.password();
+  const password = ovveride.password?ovveride.password:"Pass!123";
   return {
     email: faker.internet.email(),
     password,
