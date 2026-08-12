@@ -4,14 +4,14 @@ import { RegisterType } from "../types/register.type";
 
 export class RegisterPage extends BasePage {
   readonly url: string = "http://localhost:3000/#/register";
-  readonly loginUrl:string="http://localhost:3000/#/login"
+  readonly loginUrl: string = "http://localhost:3000/#/login";
   readonly emailInput: Locator;
   readonly passwordInput: Locator;
   readonly repeatPasswordInput: Locator;
   readonly securityQuestionSelect: Locator;
   readonly securityAnswerInput: Locator;
   readonly submitButton: Locator;
-  readonly registrationForm:Locator
+  readonly registrationForm: Locator;
   constructor(page: Page) {
     super(page);
 
@@ -26,7 +26,7 @@ export class RegisterPage extends BasePage {
     );
     this.securityAnswerInput = page.getByLabel("Answer");
     this.submitButton = page.locator("#registerButton");
-    this.registrationForm=page.locator("#registration-form")
+    this.registrationForm = page.locator("#registration-form");
   }
 
   async open() {
@@ -57,12 +57,14 @@ export class RegisterPage extends BasePage {
   }
 
   async fillForm(data: RegisterType) {
+    await this.fillInputs(data);
+    await this.selectSecurityQuestion();
+  }
+
+  async fillInputs(data: RegisterType) {
     await this.emailInput.fill(data.email);
     await this.passwordInput.fill(data.password);
     await this.repeatPasswordInput.fill(data.repeatPassword);
-
-    await this.selectSecurityQuestion();
-
     await this.securityAnswerInput.fill(data.securityAnswer);
   }
 
