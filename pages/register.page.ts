@@ -69,23 +69,27 @@ export class RegisterPage extends BasePage {
   }
 
   private async selectSecurityQuestion() {
-    const option = this.page.getByRole("option").first();
+    const listbox = this.page.locator('[role="listbox"]');
+    const firstOption = listbox.locator("mat-option").first();
 
-    for (let attempt = 0; attempt < 3; attempt++) {
-      // нативный DOM click открывает mat-select надёжно: без координат,
-      // без перехвата floating label и без зависимости от таймингов layout
+    for (let attempt = 0; attempt < 4; attempt++) {
       await this.securityQuestionSelect.evaluate((el: HTMLElement) =>
         el.click(),
       );
+
       try {
-        await option.waitFor({ state: "visible", timeout: 1500 });
-        await option.click();
+        await listbox.waitFor({ state: "visible", timeout: 3000 });
+        await firstOption.waitFor({ state: "visible", timeout: 1500 });
+        await firstOption.click();
+        await listbox
+          .waitFor({ state: "hidden", timeout: 1500 })
+          .catch(() => {});
         return;
       } catch {
-        // Панель не открылась (или toggle закрыл её) — закрываем и пробуем снова
         await this.page.keyboard.press("Escape").catch(() => {});
       }
     }
+
     throw new Error("Security question dropdown did not open");
   }
 

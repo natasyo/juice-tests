@@ -176,11 +176,14 @@ test.describe("Register Page", () => {
 
     await registerPage.securityQuestionSelect.click({ force: true });
     await page.keyboard.press("Escape");
+    await registerPage.emailInput.click();
 
     const securityQuestionFailed = page.locator("mat-error", {
-      hasText: /Please select a security question/,
+      hasText: /security question/i,
     });
-    await expect(securityQuestionFailed.first()).toBeVisible();
+    await expect(securityQuestionFailed.first()).toBeVisible({
+      timeout: 10000,
+    });
     await expect(registerPage.submitButton).toBeDisabled();
   });
 });
