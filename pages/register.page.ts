@@ -15,45 +15,30 @@ export class RegisterPage extends BasePage {
   constructor(page: Page) {
     super(page);
 
-    this.emailInput = page.getByLabel("Email address field");
+    this.emailInput = page.getByRole("textbox", {
+      name: "Email address field",
+    });
 
-    this.passwordInput = page.locator("#passwordControl");
+    this.passwordInput = page.getByRole("textbox", {
+      name: "Field for the password",
+    });
 
-    this.repeatPasswordInput = page.locator("#repeatPasswordControl");
+    this.repeatPasswordInput = page.getByRole("textbox", {
+      name: "Field to confirm the password",
+    });
 
     this.securityQuestionSelect = page.locator(
       'mat-select[name="securityQuestion"]',
     );
     this.securityAnswerInput = page.getByLabel("Answer");
-    this.submitButton = page.locator("#registerButton");
+    this.submitButton = page.getByRole("button", {
+      name: "Button to complete the registration",
+    });
     this.registrationForm = page.locator("#registration-form");
   }
 
   async open() {
     await this.goTo(this.url);
-
-    const closeWelcomeBanner = this.page.getByRole("button", {
-      name: "Close Welcome Banner",
-    });
-    await closeWelcomeBanner
-      .waitFor({ state: "visible", timeout: 3000 })
-      .catch(() => {
-        console.log("Banner not found");
-      });
-
-    if (await closeWelcomeBanner.isVisible()) {
-      await closeWelcomeBanner.click();
-    }
-
-    const coockieBtn = this.page.getByRole("button", {
-      name: "dismiss cookie message",
-    });
-    await coockieBtn.waitFor({ state: "visible", timeout: 3000 }).catch(() => {
-      console.log("Coockie not found");
-    });
-    if (await coockieBtn.isVisible()) {
-      await coockieBtn.click();
-    }
   }
 
   async fillForm(data: RegisterType) {
