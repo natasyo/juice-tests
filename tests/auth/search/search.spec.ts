@@ -19,6 +19,10 @@ test.describe("Search", () => {
       await expect
         .poll(async () => await searchPage.product.count())
         .toBeGreaterThan(0);
+      await searchPage.product.first().click();
+      await expect(searchPage.productDetails).toBeVisible();
+      await searchPage.closeProductDetails.click();
+      await expect(searchPage.productDetails).not.toBeVisible();
     });
     test.describe("smoke @smoke", async () => {
       test("Only products matching the search query are displayed in the list. Other products are hidden.   @regression", async ({
