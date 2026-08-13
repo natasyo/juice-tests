@@ -11,6 +11,7 @@ test.describe("Search", () => {
       page.on("pageerror", (err) => pageErrors.push(err.message));
     });
   });
+  //++++++++++++++++++++++++ Smoke tests+++++++++++++++++++++++++++++
   test.describe("smoke @smoke", async () => {
     test("The search bar and product cards are displayed, and available products are visible to the user.  @regression", async ({
       searchPage,
@@ -54,7 +55,7 @@ test.describe("Search", () => {
       expect(countProductsInBasket).toBeGreaterThan(0);
     });
   });
-
+  //++++++++++++++++++++++++ Regression tests+++++++++++++++++++++++++++++
   test.describe("regression @regression", () => {
     test("Search is case-insensitive, and all products containing the word 'juice' are displayed", async ({
       searchPage,
