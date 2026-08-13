@@ -11,6 +11,14 @@ import { defineConfig, devices } from "@playwright/test";
 /**
  * See https://playwright.dev/docs/test-configuration.
  */
+
+/** Браузеры, в которых запускаются тесты. */
+const browsers = [
+  { name: "chromium", use: { ...devices["Desktop Chrome"] } },
+  { name: "firefox", use: { ...devices["Desktop Firefox"] } },
+  { name: "webkit", use: { ...devices["Desktop Safari"] } },
+];
+
 export default defineConfig({
   testDir: ".",
   /* Run tests in files in parallel */
@@ -38,16 +46,19 @@ export default defineConfig({
       name: "setup",
       testMatch: "setup/auth.setup.ts",
     },
-    {
-      name: "auth",
-      use: { storageState: ".auth/user.json" },
-      dependencies: ["setup"],
-      testIgnore: [/guest\/.*\.spec\.(ts|js)$/],
-    },
-    {
-      name: "guest",
-      testMatch: [/guest\/(auth|register|profile).*\.spec\.(ts|js)$/],
-    },
+    ...browsers.flatMap(({ name, use }) => [
+      {
+        name: `auth-${name}`,
+        use: { ...use, storageState: ".auth/user.json" },
+        dependencies: ["setup"],
+        testIgnore: [/guest\/.*\.spec\.(ts|js)$/],
+      },
+      {
+        name: `guest-${name}`,
+        use,
+        testMatch: [/guest\/(auth|register|profile).*\.spec\.(ts|js)$/],
+      },
+    ]),
     // {
     //   name: "chromium",
     //   use: { ...devices["Desktop Chrome"] },

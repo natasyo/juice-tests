@@ -90,6 +90,28 @@ npx playwright test --grep "@regression"
 npx playwright test --headed
 ```
 
+## Запуск в нескольких браузерах
+
+По умолчанию тесты запускаются в трёх браузерах: **Chromium**, **Firefox** и **WebKit**.
+
+Запустить в конкретном браузере (по имени проекта):
+
+```bash
+npx playwright test --project=auth-chromium
+npx playwright test --project=guest-firefox
+npx playwright test --project=auth-webkit
+```
+
+Запустить только тесты авторизованного пользователя во всех браузерах:
+
+```bash
+npx playwright test --project=auth-*
+```
+
+Чтобы изменить набор браузеров, отредактируйте массив `browsers` в `playwright.config.ts`.
+
+> Перед первым запуском в Firefox/WebKit установите браузеры: `npx playwright install`.
+
 ## Отчёт
 
 После прогона открыть HTML-отчёт:
@@ -111,8 +133,10 @@ npx playwright show-trace test-results/<имя-теста>/trace.zip
 | Проект | Назначение |
 |--------|------------|
 | `setup` | Создаёт пользователя через API и сохраняет состояние в `.auth/user.json` |
-| `auth`  | Тесты для авторизованного пользователя (зависит от `setup`) |
-| `guest` | Тесты для гостя: логин, регистрация |
+| `auth-{browser}` | Тесты для авторизованного пользователя (зависит от `setup`) |
+| `guest-{browser}` | Тесты для гостя: логин, регистрация |
+
+`{browser}` — один из `chromium`, `firefox`, `webkit`.
 
 ## Полезные команды
 
