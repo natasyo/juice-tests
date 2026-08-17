@@ -1,10 +1,11 @@
 import { expect, Locator, Page } from "@playwright/test";
-import { BasePage } from "./base.page";
-import { RegisterType } from "../types/register.type";
+
+import { RegisterType } from "../../../types/register.type";
+import { BasePage } from "../../../pages/base.page";
 
 export class RegisterPage extends BasePage {
-  readonly url: string = "http://localhost:3000/#/register";
-  readonly loginUrl: string = "http://localhost:3000/#/login";
+  readonly url: string = "#/register";
+  readonly loginUrl: string = "#/login";
   readonly emailInput: Locator;
   readonly passwordInput: Locator;
   readonly repeatPasswordInput: Locator;
@@ -77,21 +78,4 @@ export class RegisterPage extends BasePage {
 
     throw new Error("Security question dropdown did not open");
   }
-
-  // async getQuestions() {
-  //   await expect(this.securityQuestionSelect).toBeVisible();
-  //   const wrapper = this.securityQuestionSelect.locator(
-  //     'xpath=ancestor::div[contains(@class, "mat-mdc-text-field-wrapper")][1]',
-  //   );
-  //   await wrapper.click({ force: true });
-
-  //   const listbox = await this.page.getByRole("listbox", {
-  //     name: "Selection list for the security question",
-  //   });
-  //   await expect(listbox).toBeVisible();
-  //   const items = await this.page.getByRole("option").allTextContents();
-  //   await this.page.keyboard.press("Escape");
-  //   // console.log(items);
-  //   return items.map((text) => text.trim());
-  // }
 }

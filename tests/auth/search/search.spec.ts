@@ -6,10 +6,8 @@ import { faker } from "@faker-js/faker";
 test.describe("Search", () => {
   const pageErrors: string[] = [];
   test.beforeEach(async ({ page }) => {
-    page.on("pageerror", (err) => {
-      pageErrors.length = 0;
-      page.on("pageerror", (err) => pageErrors.push(err.message));
-    });
+    pageErrors.length = 0;
+    page.on("pageerror", (err) => pageErrors.push(err.message));
   });
   //++++++++++++++++++++++++ Smoke tests+++++++++++++++++++++++++++++
   test.describe("smoke @smoke", async () => {
@@ -24,35 +22,29 @@ test.describe("Search", () => {
       await searchPage.closeProductDetails.click();
       await expect(searchPage.productDetails).not.toBeVisible();
     });
-    test.describe("smoke @smoke", async () => {
-      test("Only products matching the search query are displayed in the list. Other products are hidden.   @regression", async ({
-        searchPage,
-      }) => {
-        const searchTerm = "Apple Juice";
-        await searchPage.search(searchTerm);
-        await expect(searchPage.searchInput).toHaveValue(searchTerm);
-        await expect
-          .poll(async () => await searchPage.product.count())
-          .toBeGreaterThan(0);
 
-        await expect(searchPage.product.first()).toContainText(searchTerm, {
-          ignoreCase: true,
-        });
+    test("Only products matching the search query are displayed in the list. Other products are hidden.   @regression", async ({
+      searchPage,
+    }) => {
+      const searchTerm = "Apple Juice";
+      await searchPage.search(searchTerm);
+      await expect(searchPage.searchInput).toHaveValue(searchTerm);
+      await expect
+        .poll(async () => await searchPage.product.count())
+        .toBeGreaterThan(0);
+
+      await expect(searchPage.product.first()).toContainText(searchTerm, {
+        ignoreCase: true,
       });
     });
+
     test("add to basket", async ({ searchPage }) => {
-      try {
-        await expect
-          .poll(async () => await searchPage.addToBasket.count())
-          .toBeGreaterThan(10);
-      } catch {}
+      await expect
+        .poll(async () => await searchPage.addToBasket.count())
+        .toBeGreaterThan(1);
+
       const count = await searchPage.addToBasket.count();
-      if (count > 1) {
-        const n = faker.number.int({ min: 0, max: count - 1 });
-        await searchPage.addToBasket.nth(n).click();
-      } else {
-        await searchPage.addToBasket.click();
-      }
+      await searchPage.addToBasket.first().click();
       const countProductsInBasket = Number(
         await searchPage.countProductsInCart.textContent(),
       );

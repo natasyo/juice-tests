@@ -1,12 +1,12 @@
 import { Locator, Page } from "@playwright/test";
-import { BasePage } from "./base.page";
-import { LoginType } from "../types/login.type";
+import { BasePage } from "../../../pages/base.page";
+import { LoginType } from "../../../types/login.type";
 
 export class LoginPage extends BasePage {
   readonly emailInput: Locator;
   readonly passwordInput: Locator;
   readonly submitButton: Locator;
-  readonly url = "http://localhost:3000/#/login";
+  readonly url = "#/login";
   constructor(page: Page) {
     super(page);
     this.emailInput = this.page.getByRole("textbox", {

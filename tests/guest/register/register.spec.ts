@@ -1,6 +1,6 @@
 import { expect } from "@playwright/test";
-import { generateRigisterData } from "../../data/register.data";
-import { test } from "./fixtures/registerPage.fixture";
+import { generateRigisterData } from "../../../data/register.data";
+import { test } from "./registerPage.fixture";
 
 // test.describe.configure({ mode: "serial" });
 

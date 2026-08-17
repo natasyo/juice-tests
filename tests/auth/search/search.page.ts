@@ -2,7 +2,7 @@ import { Locator, Page } from "@playwright/test";
 import { BasePage } from "../../../pages/base.page";
 
 export class SearchPage extends BasePage {
-  readonly url = "http://localhost:3000/#/search";
+  readonly url = "#/search";
   readonly product: Locator;
   readonly addToBasket: Locator;
   readonly productDetails: Locator;

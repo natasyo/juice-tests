@@ -1,7 +1,7 @@
 import { APIRequestContext, expect } from "@playwright/test";
-import { generateRigisterData } from "../../data/register.data";
-import { test } from "./fixtures/loginPage.fixture";
-import { createUser } from "../../helpers/register-user-api.helper";
+import { generateRigisterData } from "../../../data/register.data";
+import { test } from "./loginPage.fixture";
+import { createUser } from "../../../helpers/register-user-api.helper";
 
 test.describe("Login", () => {
   test.describe("smoke @smoke", () => {
@@ -15,9 +15,10 @@ test.describe("Login", () => {
       await loginPage.fillForm({ email: user.email, password: user.password });
       await loginPage.submitButton.click();
       expect(page.url()).not.toContain("*/#/login");
-      await loginPage.showHideUserBtn.click();
       await expect(loginPage.userEmailBtn).toBeVisible();
       await expect(loginPage.userEmailBtn).toContainText(user.email);
+      await page.goto("/profile");
+      await expect(page).toHaveURL(/profile/i);
     });
   });
 
@@ -35,8 +36,6 @@ test.describe("Login", () => {
       });
       await loginPage.submitButton.click();
       await expect(page).toHaveURL(loginPage.url);
-      await loginPage.submitButton.click();
-
       const err = page.locator("div.error");
       await expect(err).toBeVisible({ timeout: 5000 });
       await expect(err).toHaveText("Invalid email or password.");
@@ -54,7 +53,6 @@ test.describe("Login", () => {
       });
       await loginPage.submitButton.click();
       await expect(page).toHaveURL(loginPage.url);
-      await loginPage.submitButton.click();
 
       const err = page.locator("div.error");
       await expect(err).toBeVisible({ timeout: 5000 });
