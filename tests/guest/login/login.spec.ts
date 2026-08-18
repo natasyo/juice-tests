@@ -30,16 +30,12 @@ test.describe("Login", () => {
       baseURL,
     }) => {
       const user = await createUser(request, baseURL);
-      await loginPage.fillForm({
+      loginPage.loginWithError({
         email: user.email,
         password: "invalid+passwoord",
       });
-      await loginPage.submitButton.click();
-      await expect(page).toHaveURL(loginPage.url);
-      const err = page.locator("div.error");
-      await expect(err).toBeVisible({ timeout: 5000 });
-      await expect(err).toHaveText("Invalid email or password.");
     });
+
     test("Login with an unregistered email address. An authentication error message is displayed, and the user is not logged in.", async ({
       page,
       loginPage,
@@ -47,16 +43,10 @@ test.describe("Login", () => {
       baseURL,
     }) => {
       const user = await createUser(request, baseURL);
-      await loginPage.fillForm({
+      loginPage.loginWithError({
         email: "invalidEmailjkl@ttt.ru",
-        password: "invalid+passwoord",
+        password: user.password,
       });
-      await loginPage.submitButton.click();
-      await expect(page).toHaveURL(loginPage.url);
-
-      const err = page.locator("div.error");
-      await expect(err).toBeVisible({ timeout: 5000 });
-      await expect(err).toHaveText("Invalid email or password.");
     });
   });
 

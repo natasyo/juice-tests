@@ -11,12 +11,15 @@ test.describe("Search", () => {
   });
   //++++++++++++++++++++++++ Smoke tests+++++++++++++++++++++++++++++
   test.describe("smoke @smoke", async () => {
+
+    
     test("The search bar and product cards are displayed, and available products are visible to the user.  @regression", async ({
       searchPage,
     }) => {
       await expect
         .poll(async () => await searchPage.product.count())
         .toBeGreaterThan(0);
+      
       await searchPage.product.first().click();
       await expect(searchPage.productDetails).toBeVisible();
       await searchPage.closeProductDetails.click();
@@ -53,6 +56,7 @@ test.describe("Search", () => {
   });
   //++++++++++++++++++++++++ Regression tests+++++++++++++++++++++++++++++
   test.describe("regression @regression", () => {
+
     test("Search is case-insensitive, and all products containing the word 'juice' are displayed", async ({
       searchPage,
     }) => {
@@ -66,6 +70,9 @@ test.describe("Search", () => {
         ignoreCase: true,
       });
     });
+
+
+
     test("An empty search query displays the full list of products without showing an empty state", async ({
       searchPage,
       page,
@@ -80,7 +87,10 @@ test.describe("Search", () => {
       await expect(wrapper).not.toContainClass("emptyState");
     });
 
-    test("An", async ({ searchPage, page }) => {
+    test("Search for a non-existent product. The product list is empty, or a 'No results' message is displayed. The UI remains stable.", async ({
+      searchPage,
+      page,
+    }) => {
       await searchPage.search("skdjfksdjfk");
 
       const wrapper = page.locator("mat-card");
