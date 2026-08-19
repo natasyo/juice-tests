@@ -1,7 +1,7 @@
 import { expect, Locator, Page } from "@playwright/test";
 
 import { RegisterType } from "../../../types/register.type";
-import { BasePage } from "../../../pages/base.page";
+import { BasePage } from "../../../helpers/page/base.page";
 
 export class RegisterPage extends BasePage {
   readonly url: string = "#/register";

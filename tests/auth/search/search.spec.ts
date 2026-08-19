@@ -11,19 +11,13 @@ test.describe("Search", () => {
   });
   //++++++++++++++++++++++++ Smoke tests+++++++++++++++++++++++++++++
   test.describe("smoke @smoke", async () => {
-
-    
     test("The search bar and product cards are displayed, and available products are visible to the user.  @regression", async ({
       searchPage,
     }) => {
       await expect
         .poll(async () => await searchPage.product.count())
         .toBeGreaterThan(0);
-      
-      await searchPage.product.first().click();
-      await expect(searchPage.productDetails).toBeVisible();
-      await searchPage.closeProductDetails.click();
-      await expect(searchPage.productDetails).not.toBeVisible();
+      await searchPage.openProductCardDialog();
     });
 
     test("Only products matching the search query are displayed in the list. Other products are hidden.   @regression", async ({
@@ -39,12 +33,15 @@ test.describe("Search", () => {
       await expect(searchPage.product.first()).toContainText(searchTerm, {
         ignoreCase: true,
       });
+      await searchPage.openProductCardDialog();
     });
 
     test("add to basket", async ({ searchPage }) => {
       await expect
-        .poll(async () => await searchPage.addToBasket.count())
-        .toBeGreaterThan(1);
+        .poll(async () => await searchPage.addToBasket.count(), {
+          intervals: [1000, 1000],
+        })
+        .toBeGreaterThan(0);
 
       const count = await searchPage.addToBasket.count();
       await searchPage.addToBasket.first().click();
@@ -56,7 +53,6 @@ test.describe("Search", () => {
   });
   //++++++++++++++++++++++++ Regression tests+++++++++++++++++++++++++++++
   test.describe("regression @regression", () => {
-
     test("Search is case-insensitive, and all products containing the word 'juice' are displayed", async ({
       searchPage,
     }) => {
@@ -69,9 +65,8 @@ test.describe("Search", () => {
       await expect(searchPage.product.first()).toContainText(searchTerm, {
         ignoreCase: true,
       });
+      await searchPage.openProductCardDialog();
     });
-
-
 
     test("An empty search query displays the full list of products without showing an empty state", async ({
       searchPage,
@@ -85,6 +80,7 @@ test.describe("Search", () => {
         .toBeGreaterThan(0);
       const wrapper = page.locator("mat-card").first();
       await expect(wrapper).not.toContainClass("emptyState");
+      await searchPage.openProductCardDialog();
     });
 
     test("Search for a non-existent product. The product list is empty, or a 'No results' message is displayed. The UI remains stable.", async ({

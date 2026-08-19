@@ -1,7 +1,8 @@
 import { APIRequestContext, expect, Locator, Page } from "@playwright/test";
-import { BasePage } from "../../../pages/base.page";
+
 import { LoginType } from "../../../types/login.type";
 import { createUser } from "../../../helpers/register-user-api.helper";
+import { BasePage } from "../../../helpers/page/base.page";
 
 export class LoginPage extends BasePage {
   readonly emailInput: Locator;

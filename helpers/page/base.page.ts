@@ -31,6 +31,11 @@ export class BasePage {
     });
     this.countProductsInCart = this.cartBtn.locator(".warn-notification");
   }
+
+  async search(term: string) {
+    await this.searchInput.fill(term);
+    await this.searchInput.press("Enter");
+  }
   async goTo(url: string) {
     await this.page.goto(url);
     try {

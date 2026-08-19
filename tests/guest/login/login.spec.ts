@@ -30,7 +30,7 @@ test.describe("Login", () => {
       baseURL,
     }) => {
       const user = await createUser(request, baseURL);
-      loginPage.loginWithError({
+      await loginPage.loginWithError({
         email: user.email,
         password: "invalid+passwoord",
       });
@@ -43,7 +43,7 @@ test.describe("Login", () => {
       baseURL,
     }) => {
       const user = await createUser(request, baseURL);
-      loginPage.loginWithError({
+      await loginPage.loginWithError({
         email: "invalidEmailjkl@ttt.ru",
         password: user.password,
       });
