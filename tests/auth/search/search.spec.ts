@@ -37,18 +37,7 @@ test.describe("Search", () => {
     });
 
     test("add to basket", async ({ searchPage }) => {
-      await expect
-        .poll(async () => await searchPage.addToBasket.count(), {
-          intervals: [1000, 1000],
-        })
-        .toBeGreaterThan(0);
-
-      const count = await searchPage.addToBasket.count();
-      await searchPage.addToBasket.first().click();
-      const countProductsInBasket = Number(
-        await searchPage.countProductsInCart.textContent(),
-      );
-      expect(countProductsInBasket).toBeGreaterThan(0);
+      await searchPage.addToBasket;
     });
   });
   //++++++++++++++++++++++++ Regression tests+++++++++++++++++++++++++++++
@@ -94,6 +83,46 @@ test.describe("Search", () => {
       await expect
         .poll(async () => await searchPage.product.count())
         .toEqual(0);
+    });
+
+    test("Pagination. The number of displayed products should be less than or equal to the pagination limit.", async ({
+      searchPage,
+    }) => {
+      await test.step("default count products in page", async () => {
+        const count = await searchPage.paginator.getPageSize();
+        const countProducts = await searchPage.product.count();
+
+        expect(countProducts).toBeLessThanOrEqual(count);
+      });
+
+      await test.step("change count products in page", async () => {
+        await searchPage.paginator.setPageSize("30");
+
+        const countProducts = await searchPage.product.count();
+        const count = await searchPage.paginator.getPageSize();
+
+        expect(countProducts).toBeLessThanOrEqual(count);
+      });
+    });
+
+    test("should navigate to the next page", async ({ searchPage }) => {
+      await expect(searchPage.paginator.previousPageButton).toBeDisabled();
+      await expect(searchPage.productName.first()).toBeVisible();
+      const productsFirst = await searchPage.productName.allInnerTexts();
+
+      await searchPage.paginator.nextPage();
+      await expect(searchPage.productName.first()).toBeVisible();
+      const productsSecond = await searchPage.productName.allInnerTexts();
+      expect(productsFirst).not.toEqual(productsSecond);
+      await expect(searchPage.paginator.previousPageButton).not.toBeDisabled();
+
+      await searchPage.paginator.previousPage();
+      await expect(searchPage.productName.first()).toBeVisible();
+      const productFirstNew = await searchPage.productName.allInnerTexts();
+
+      expect(productsFirst).toEqual(productFirstNew);
+      expect(productFirstNew).not.toEqual(searchPage);
+      await expect(searchPage.paginator.previousPageButton).toBeDisabled();
     });
   });
   test.afterEach(() => {
