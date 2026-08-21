@@ -1,4 +1,4 @@
-import { expect, Locator, Page } from "@playwright/test";
+import test, { expect, Locator, Page } from "@playwright/test";
 import { BasePage } from "./base.page";
 import { PaginationComponent } from "../components/pagination.component";
 
@@ -47,5 +47,48 @@ export class WithProductsPage extends BasePage {
       await this.countProductsInCart.textContent(),
     );
     expect(countProductsInBasket).toBeGreaterThan(countProductInBasket);
+  }
+
+  async paginationPage() {
+    await expect(this.paginator.previousPageButton).toBeDisabled();
+    await expect(this.productName.first()).toBeVisible();
+    const productsFirst = await this.productName.allInnerTexts();
+
+    await this.paginator.nextPage();
+    await expect(this.productName.first()).toBeVisible();
+    const productsSecond = await this.productName.allInnerTexts();
+    expect(productsFirst).not.toEqual(productsSecond);
+    await expect(this.paginator.previousPageButton).not.toBeDisabled();
+
+    await this.paginator.previousPage();
+    await expect(this.productName.first()).toBeVisible();
+    const productFirstNew = await this.productName.allInnerTexts();
+
+    expect(productsFirst).toEqual(productFirstNew);
+    expect(productFirstNew).not.toEqual(this);
+    await expect(this.paginator.previousPageButton).toBeDisabled();
+    while (await this.paginator.nextPageButton.isEnabled()) {
+      await this.paginator.nextPage();
+      await expect(this.productName.first()).toBeVisible();
+    }
+    await expect(this.paginator.nextPageButton).toBeDisabled();
+  }
+
+  async changeCountInPage() {
+    await test.step("default count products in page", async () => {
+      const count = await this.paginator.getPageSize();
+      const countProducts = await this.product.count();
+
+      expect(countProducts).toBeLessThanOrEqual(count);
+    });
+
+    await test.step("change count products in page", async () => {
+      await this.paginator.setPageSize("30");
+
+      const countProducts = await this.product.count();
+      const count = await this.paginator.getPageSize();
+
+      expect(countProducts).toBeLessThanOrEqual(count);
+    });
   }
 }
