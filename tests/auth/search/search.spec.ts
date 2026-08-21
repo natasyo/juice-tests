@@ -37,7 +37,7 @@ test.describe("Search", () => {
     });
 
     test("add to basket", async ({ searchPage }) => {
-      await searchPage.addToBasket;
+      await searchPage.addTobasketProduct();
     });
   });
   //++++++++++++++++++++++++ Regression tests+++++++++++++++++++++++++++++

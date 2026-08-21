@@ -4,7 +4,7 @@ import { test } from "./main.fixture";
 test.describe("Main page guest", () => {
   test.describe("smoke @smoke", async () => {
     test("add to basket", async ({ mainPage }) => {
-      await mainPage.addToBasket;
+      await mainPage.addTobasketProduct();
     });
   });
   test.describe("regression @regression", () => {
