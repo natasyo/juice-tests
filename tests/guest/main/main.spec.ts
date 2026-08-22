@@ -1,4 +1,3 @@
-import { expect } from "@playwright/test";
 import { test } from "./main.fixture";
 
 test.describe("Main page guest", () => {
