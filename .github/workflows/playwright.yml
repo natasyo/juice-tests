@@ -17,15 +17,8 @@ jobs:
         run: |
           docker run -d --name juice-shop -p 3000:3000 bkimminich/juice-shop
       - name: Wait for Juice Shop to be ready
-        run: for i in $(seq 1 60); do
-          if curl -sf http://localhost:3000 > /dev/null; then
-          echo "Juice Shop is UP"
-          exit 0
-          fi
-          sleep 2
-          done
-          echo "Juice Shop did not start in time" >&2
-          exit 1
+        run: |
+          for i in $(seq 1 60); do if curl -sf http://localhost:3000 > /dev/null; then echo "Juice Shop is UP"; exit 0; fi; sleep 2; done; echo "Juice Shop did not start in time" >&2; exit 1
       - name: Install dependencies
         run: npm ci
       - name: Install Playwright Browsers
