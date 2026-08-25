@@ -31,22 +31,12 @@ export class WithProductsPage extends BasePage {
     await expect(this.productDetails).not.toBeVisible();
   }
 
-  async addTobasketProduct() {
-    const countProductInBasket = Number(
-      await this.countProductsInCart.textContent(),
-    );
-    await expect
-      .poll(async () => await this.addToBasket.count(), {
-        intervals: [1000, 1000],
-      })
-      .toBeGreaterThan(0);
+  async getBasketCount() {
+    return Number(await this.countProductsInCart.textContent());
+  }
 
-    const count = await this.addToBasket.count();
+  async addFirstProductToBasket() {
     await this.addToBasket.first().click();
-    const countProductsInBasket = Number(
-      await this.countProductsInCart.textContent(),
-    );
-    expect(countProductsInBasket).toBeGreaterThan(countProductInBasket);
   }
 
   async paginationPage() {

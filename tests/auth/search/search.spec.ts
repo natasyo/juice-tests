@@ -2,6 +2,7 @@ import { expect } from "@playwright/test";
 import { test } from "./search.fixture";
 import { SearchPage } from "./search.page";
 import { faker } from "@faker-js/faker";
+import { assertAddToBasketIncreasesCount } from "../../../helpers/assertions/basket";
 
 test.describe("Search", () => {
   const pageErrors: string[] = [];
@@ -37,7 +38,7 @@ test.describe("Search", () => {
     });
 
     test("add to basket", async ({ searchPage }) => {
-      await searchPage.addTobasketProduct();
+      await assertAddToBasketIncreasesCount(searchPage);
     });
   });
   //++++++++++++++++++++++++ Regression tests+++++++++++++++++++++++++++++

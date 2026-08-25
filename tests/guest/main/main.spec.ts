@@ -1,9 +1,10 @@
+import { assertAddToBasketIncreasesCount } from "../../../helpers/assertions/basket";
 import { test } from "./main.fixture";
 
 test.describe("Main page guest", () => {
   test.describe("smoke @smoke", async () => {
     test("add to basket", async ({ mainPage }) => {
-      await mainPage.addTobasketProduct();
+      await assertAddToBasketIncreasesCount(mainPage);
     });
   });
   test.describe("regression @regression", () => {
