@@ -3,6 +3,10 @@ import { test } from "./search.fixture";
 import { SearchPage } from "./search.page";
 import { faker } from "@faker-js/faker";
 import { assertAddToBasketIncreasesCount } from "../../../helpers/assertions/basket";
+import {
+  assertChangeCountInPage,
+  assertPagination,
+} from "../../../helpers/assertions/pagination";
 
 test.describe("Search", () => {
   const pageErrors: string[] = [];
@@ -89,11 +93,11 @@ test.describe("Search", () => {
     test("Pagination. The number of displayed products should be less than or equal to the pagination limit.", async ({
       searchPage,
     }) => {
-      await searchPage.changeCountInPage();
+      await assertChangeCountInPage(searchPage);
     });
 
     test("should navigate to the next, prev page", async ({ searchPage }) => {
-      await searchPage.paginationPage();
+      await assertPagination(searchPage);
     });
   });
   test.afterEach(() => {

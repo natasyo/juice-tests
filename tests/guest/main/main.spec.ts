@@ -1,4 +1,8 @@
 import { assertAddToBasketIncreasesCount } from "../../../helpers/assertions/basket";
+import {
+  assertChangeCountInPage,
+  assertPagination,
+} from "../../../helpers/assertions/pagination";
 import { test } from "./main.fixture";
 
 test.describe("Main page guest", () => {
@@ -11,11 +15,11 @@ test.describe("Main page guest", () => {
     test("Pagination. The number of displayed products should be less than or equal to the pagination limit.", async ({
       mainPage,
     }) => {
-      await mainPage.changeCountInPage();
+      await assertChangeCountInPage(mainPage);
     });
 
     test("should navigate to the next, prev page", async ({ mainPage }) => {
-      await mainPage.paginationPage();
+      await assertPagination(mainPage);
     });
   });
 });
