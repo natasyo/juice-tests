@@ -3,25 +3,36 @@ import { WithProductsPage } from "../page/with-products.page";
 
 export async function assertPagination(page: WithProductsPage) {
   await expect(page.paginator.previousPageButton).toBeDisabled();
-  await expect(page.productName.first()).toBeVisible();
+  // Ждём, что первая страница товаров реально отрисовалась (список не пуст),
+  // прежде чем читать эталонный набор.
+  await expect
+    .poll(async () => await page.productName.allInnerTexts(), {
+      timeout: 15000,
+      intervals: [1000, 1000],
+    })
+    .not.toHaveLength(0);
   const productsFirst = await page.productName.allInnerTexts();
 
   await page.paginator.nextPage();
-  await expect(page.productName.first()).toBeVisible();
+  // дожидаемся, что набор товаров реально сменился (первая → вторая страница)
+  await expect
+    .poll(async () => await page.productName.allInnerTexts())
+    .not.toEqual(productsFirst);
   const productsSecond = await page.productName.allInnerTexts();
-  expect(productsFirst).not.toEqual(productsSecond);
+  expect(productsSecond).not.toEqual(productsFirst);
   await expect(page.paginator.previousPageButton).not.toBeDisabled();
 
   await page.paginator.previousPage();
-  await expect(page.productName.first()).toBeVisible();
+  // дожидаемся, что вернулся исходный набор товаров (перечитываем по кругу)
+  await expect
+    .poll(async () => await page.productName.allInnerTexts())
+    .toEqual(productsFirst);
   const productFirstNew = await page.productName.allInnerTexts();
-
-  expect(productsFirst).toEqual(productFirstNew);
-  expect(productFirstNew).not.toEqual(page);
+  expect(productFirstNew).toEqual(productsFirst);
   await expect(page.paginator.previousPageButton).toBeDisabled();
   while (await page.paginator.nextPageButton.isEnabled()) {
     await page.paginator.nextPage();
-    await expect(page.productName.first()).toBeVisible();
+    await expect.poll(async () => await page.productName.first().isVisible());
   }
   await expect(page.paginator.nextPageButton).toBeDisabled();
 }

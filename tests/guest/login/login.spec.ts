@@ -14,7 +14,9 @@ test.describe("Login", () => {
       const user = await createUser(request, baseURL);
       await loginPage.fillForm({ email: user.email, password: user.password });
       await loginPage.submitButton.click();
-      expect(page.url()).not.toContain("*/#/login");
+
+      // Пункт меню "go to user profile" виден только после открытия dropdown аккаунта.
+      await loginPage.showHideUserBtn.click();
       await expect(loginPage.userEmailBtn).toBeVisible();
       await expect(loginPage.userEmailBtn).toContainText(user.email);
       await page.goto("/profile");

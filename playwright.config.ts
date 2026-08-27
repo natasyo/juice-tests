@@ -56,7 +56,8 @@ export default defineConfig({
       {
         name: `guest-${name}`,
         use,
-        testMatch: [/guest\/(auth|register|profile).*\.spec\.(ts|js)$/],
+        // testMatch: [/guest\/(auth|register|profile|basket).*\.spec\.(ts|js)$/],
+        testMatch: [/guest\/.*\.spec\.(ts|js)$/],
       },
     ]),
     // {
