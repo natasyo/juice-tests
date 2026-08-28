@@ -3,7 +3,7 @@ import { assertAddToBasketIncreasesCount } from "../../../helpers/assertions/bas
 import { test } from "./basket.fixture";
 
 test.describe("Basket without auth", () => {
-  test("Success", async ({ mainPage, basketPageGuest }) => {
+  test("Success 1 product", async ({ mainPage, basketPageGuest, page }) => {
     await mainPage.open();
     await assertAddToBasketIncreasesCount(mainPage);
     await mainPage.cartBtn.click();
@@ -11,6 +11,23 @@ test.describe("Basket without auth", () => {
     const quantityText = await basketPageGuest.rowItems
       .locator(".cdk-column-quantity span.cell-initial-font")
       .innerText();
-    console.log(quantityText);
+    const productsInBasket =
+      await basketPageGuest.countProductsInCart.innerText();
+    expect(Number(quantityText)).toEqual(Number(productsInBasket));
+    await basketPageGuest.checkoutBtn.click();
+    await expect(page).toHaveURL(/login/i);
+  });
+  test("Success 2 product", async ({ mainPage, basketPageGuest, page }) => {
+    await mainPage.open();
+    await assertAddToBasketIncreasesCount(mainPage);
+    await assertAddToBasketIncreasesCount(mainPage, 1);
+    await mainPage.cartBtn.click();
+    await expect(basketPageGuest.basketHeader).toBeVisible();
+    const quantityText = await basketPageGuest.rowItems
+      .locator(".cdk-column-quantity span.cell-initial-font")
+      .allInnerTexts();
+
+    // await basketPageGuest.checkoutBtn.click();
+    // await expect(page).toHaveURL(/login/i);
   });
 });

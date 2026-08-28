@@ -35,7 +35,12 @@ export class WithProductsPage extends BasePage {
     return Number(await this.countProductsInCart.textContent());
   }
 
-  async addFirstProductToBasket() {
-    await this.addToBasket.first().click();
+  async addProductToBasket(num = 0) {
+    await expect(this.addToBasket.nth(num)).toBeVisible({ timeout: 15_000 });
+    if (num === 0) await this.addToBasket.first().click();
+    else {
+      if ((await this.addToBasket.count()) > num)
+        await this.addToBasket.nth(num).click();
+    }
   }
 }
