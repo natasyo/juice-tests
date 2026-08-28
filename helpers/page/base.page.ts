@@ -65,4 +65,7 @@ export class BasePage {
       }
     } catch {}
   }
+  async getCountProductInPage() {
+    return Number(await this.countProductsInCart.innerText());
+  }
 }
