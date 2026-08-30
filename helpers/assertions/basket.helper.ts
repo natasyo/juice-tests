@@ -41,3 +41,11 @@ export async function assertTotalPrice(
     expect(+total).toEqual(+price);
   }
 }
+export async function assertEmptyBasket(
+  basketPage: BasketBasePage,
+  page: Page,
+) {
+  await basketPage.open();
+  await expect(page).toHaveURL(basketPage.url);
+  expect(basketPage.checkoutBtn).toBeDisabled();
+}

@@ -1,6 +1,7 @@
 import { expect } from "@playwright/test";
 import {
   assertAddToBasketIncreasesCount,
+  assertEmptyBasket,
   assertTotalPrice,
 } from "../../../helpers/assertions/basket.helper";
 import { test } from "./basket.fixture";
@@ -32,5 +33,12 @@ test.describe("Basket without auth", () => {
     await assertTotalPrice(basketPageGuest, mainPage, page);
     await basketPageGuest.checkoutBtn.click();
     await expect(page).toHaveURL(/login/i);
+  });
+
+  test("User not logged in. Cart is empty.", async ({
+    page,
+    basketPageGuest,
+  }) => {
+    await assertEmptyBasket(basketPageGuest, page);
   });
 });

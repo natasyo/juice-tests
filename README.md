@@ -49,16 +49,22 @@ curl http://localhost:3000
 
 ```
 juice/
-├── data/                # Генерация тестовых данных (faker)
-├── helpers/             # Хелперы (API-запросы и т.п.)
-├── pages/               # Page Object Model (BasePage и др.)
+├── data/                # Генерация тестовых данных (faker) — register.data.ts
+├── helpers/
+│   ├── assertions/      # Кастомные проверки (basket, pagination)
+│   ├── components/      # UI-компоненты (pagination)
+│   ├── page/            # Page Object Model (BasePage, BasketBasePage, WithProducts)
+│   └── register-user-api.helper.ts  # Создание пользователя через API
+├── types/               # TypeScript-типы (login.type.ts, register.type.ts)
 ├── setup/               # Глобальная подготовка (auth.setup.ts)
 ├── tests/
 │   ├── auth/            # Тесты для авторизованного пользователя
 │   │   └── search/      # Поиск (spec, page, fixture)
-│   └── guest/           # Тесты для гостя (login, register)
-├── types/               # TypeScript-типы
-├── utils/               # Утилиты
+│   └── guest/           # Тесты для гостя
+│       ├── basket/      # Корзина без авторизации
+│       ├── login/       # Логин
+│       ├── main/        # Главная страница
+│       └── register/    # Регистрация
 ├── playwright.config.ts # Конфигурация Playwright
 └── test-results/        # Артефакты прогона (создаётся автоматически)
 ```
@@ -134,7 +140,7 @@ npx playwright show-trace test-results/<имя-теста>/trace.zip
 |--------|------------|
 | `setup` | Создаёт пользователя через API и сохраняет состояние в `.auth/user.json` |
 | `auth-{browser}` | Тесты для авторизованного пользователя (зависит от `setup`) |
-| `guest-{browser}` | Тесты для гостя: логин, регистрация |
+| `guest-{browser}` | Тесты для гостя: регистрация, логин, главная страница, корзина |
 
 `{browser}` — один из `chromium`, `firefox`, `webkit`.
 
