@@ -1,5 +1,8 @@
 import { expect } from "@playwright/test";
-import { assertAddToBasketIncreasesCount } from "../../../helpers/assertions/basket";
+import {
+  assertAddToBasketIncreasesCount,
+  assertTotalPrice,
+} from "../../../helpers/assertions/basket.helper";
 import { test } from "./basket.fixture";
 
 test.describe("Basket without auth", () => {
@@ -26,28 +29,8 @@ test.describe("Basket without auth", () => {
     basketPageGuest,
     page,
   }) => {
-    await mainPage.open();
-    await assertAddToBasketIncreasesCount(mainPage);
-    await assertAddToBasketIncreasesCount(mainPage, 1);
-    await mainPage.cartBtn.click();
-    await expect(basketPageGuest.basketHeader).toBeVisible();
-    const count = await basketPageGuest.getCountProductInPage();
-    if (count > 0) {
-      await expect
-        .poll(async () => await basketPageGuest.rowItems.count(), {
-          timeout: 15_000,
-          intervals: [1000, 1000],
-        })
-        .toBeGreaterThan(0);
-      const quantityText = await basketPageGuest.rowItems
-        .locator(".cdk-column-quantity span.cell-initial-font")
-        .allInnerTexts();
-      const sum = quantityText.reduce((acc, num) => {
-        return acc + +num;
-      }, 0);
-      expect(count).toEqual(sum);
-      await basketPageGuest.checkoutBtn.click();
-      await expect(page).toHaveURL(/login/i);
-    }
+    await assertTotalPrice(basketPageGuest, mainPage, page);
+    await basketPageGuest.checkoutBtn.click();
+    await expect(page).toHaveURL(/login/i);
   });
 });

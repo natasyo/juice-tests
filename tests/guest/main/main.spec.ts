@@ -1,4 +1,4 @@
-import { assertAddToBasketIncreasesCount } from "../../../helpers/assertions/basket";
+import { assertAddToBasketIncreasesCount } from "../../../helpers/assertions/basket.helper";
 import {
   assertChangeCountInPage,
   assertPagination,

@@ -1,12 +1,10 @@
 import { expect } from "@playwright/test";
 import { test } from "./search.fixture";
-import { SearchPage } from "./search.page";
-import { faker } from "@faker-js/faker";
-import { assertAddToBasketIncreasesCount } from "../../../helpers/assertions/basket";
 import {
   assertChangeCountInPage,
   assertPagination,
 } from "../../../helpers/assertions/pagination";
+import { assertAddToBasketIncreasesCount } from "../../../helpers/assertions/basket.helper";
 
 test.describe("Search", () => {
   const pageErrors: string[] = [];
