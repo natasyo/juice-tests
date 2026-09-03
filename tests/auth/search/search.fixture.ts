@@ -13,7 +13,6 @@ const EXPANDED_MIN_WIDTH = 10;
 
 export const test = base.extend<SearchFixtures>({
   searchPage: async ({ page }, use) => {
-    // Восстанавливаем sessionStorage ДО первого goto()
     await page.addInitScript((bid) => {
       sessionStorage.setItem("bid", String(bid));
     }, sessionState.bid);

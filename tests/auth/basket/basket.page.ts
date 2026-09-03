@@ -1,7 +1,7 @@
-import { Locator, Page } from "@playwright/test";
-import { BasePage } from "../../../helpers/page/base.page";
+import {  Page } from "@playwright/test";
+
 import { BasketBasePage } from "../../../helpers/page/basketBasePage";
-export class BasketGuestPage extends BasketBasePage {
+export class BasketAuthPage extends BasketBasePage {
   constructor(page: Page) {
     super(page);
   }

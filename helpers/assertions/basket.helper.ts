@@ -37,7 +37,12 @@ export async function assertTotalPrice(
       .toBeGreaterThan(0);
 
     const sum = await basketPage.getTotalCountProducts();
-    expect(count).toEqual(sum);
+    expect
+      .poll(async () => await basketPage.getCountProductInPage(), {
+        timeout: 15000,
+        intervals: [1000, 1000],
+      })
+      .toEqual(sum);
     const total = await basketPage.getTotalCost();
     const price = (await basketPage.totalPrice.innerText()).replace(
       /[^\d.]/g,
@@ -52,5 +57,6 @@ export async function assertEmptyBasket(
 ) {
   await basketPage.open();
   await expect(page).toHaveURL(basketPage.url);
-  expect(basketPage.checkoutBtn).toBeDisabled();
+  await expect(basketPage.checkoutBtn).toBeVisible();
+  await expect(basketPage.checkoutBtn).toBeDisabled();
 }
