@@ -9,7 +9,12 @@ export async function assertAddToBasketIncreasesCount(
 ) {
   const before = await page.getBasketCount();
   await page.addProductToBasket(number);
-  await expect.poll(() => page.getBasketCount()).toBeGreaterThan(before);
+  await expect
+    .poll(() => page.getBasketCount(), {
+      timeout: 15_000,
+      intervals: [1000, 1000],
+    })
+    .toBeGreaterThan(before);
 }
 
 export async function assertTotalPrice(

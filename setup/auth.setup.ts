@@ -1,25 +1,54 @@
-import { test as setup, request as requestUI } from "@playwright/test";
+import { test as setup } from "@playwright/test";
 import fs from "fs";
 import { createUser } from "../helpers/register-user-api.helper";
 
 const authFile = ".auth/user.json";
+const sessionFile = ".auth/session.json";
 
-setup("prepare db and authenticate", async ({ baseURL, request }) => {
-  // 1) Очистить БД (dev/test endpoint)
-  // await fetch(`${baseURL}/test/reset`, { method: 'POST' });
-
-  // 2) Создать тестового пользователя через dev/test сид‑эндпоинт ИЛИ напрямую через API
-  // Предпочтительно иметь /api/test-seed/create-user, иначе — обычный /auth/register
+setup("prepare db and authenticate", async ({ baseURL, request, page }) => {
   const user = await createUser(request, baseURL);
 
-  // 3) Логин через API и сохранить storageState
-  if (!fs.existsSync(".auth")) fs.mkdirSync(".auth");
-
-  const api = await requestUI.newContext({ baseURL });
-  const res = await api.post("/auth/login", {
-    data: user,
+  const res = await request.post("/rest/user/login", {
+    data: {
+      email: user.email,
+      password: user.password,
+    },
   });
-  if (!res.ok()) throw new Error(`Login failed: ${res.status()}`);
 
-  await api.storageState({ path: authFile });
+  if (!res.ok()) {
+    throw new Error(`Login failed: ${res.status()}\n${await res.text()}`);
+  }
+
+  const body = await res.json();
+
+  const token = body.authentication.token;
+  const bid = body.authentication.bid;
+  const email = body.authentication.umail;
+
+  await page.addInitScript(
+    ({ token, email, bid }) => {
+      localStorage.setItem("token", token);
+      localStorage.setItem("email", email);
+      sessionStorage.setItem("bid", String(bid));
+    },
+    { token, email, bid },
+  );
+
+  await page.goto("/");
+
+  if (!fs.existsSync(".auth")) {
+    fs.mkdirSync(".auth", { recursive: true });
+  }
+
+  // cookies + localStorage
+  await page.context().storageState({
+    path: authFile,
+  });
+
+  // sessionStorage отдельно
+  const sessionStorage = await page.evaluate(() => ({
+    bid: window.sessionStorage.getItem("bid"),
+  }));
+
+  fs.writeFileSync(sessionFile, JSON.stringify(sessionStorage, null, 2));
 });

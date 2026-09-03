@@ -1,4 +1,18 @@
 {
   "cookies": [],
-  "origins": []
+  "origins": [
+    {
+      "origin": "http://localhost:3000",
+      "localStorage": [
+        {
+          "name": "token",
+          "value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJkYXRhIjp7ImlkIjo3MSwidXNlcm5hbWUiOiIiLCJlbWFpbCI6IjE3ODg0NTAzODIwNzUtQmVybmFkZXR0ZV9LdWhuNTRAZ21haWwuY29tIiwicGFzc3dvcmQiOiJhMDcxOGM5NmVjNTJmZDQxZmM0NWUzZTZlOTcxODg4NSIsInJvbGUiOiJjdXN0b21lciIsImRlbHV4ZVRva2VuIjoiIiwibGFzdExvZ2luSXAiOiIwLjAuMC4wIiwicHJvZmlsZUltYWdlIjoiL2Fzc2V0cy9wdWJsaWMvaW1hZ2VzL3VwbG9hZHMvZGVmYXVsdC5zdmciLCJ0b3RwU2VjcmV0IjoiIiwiaXNBY3RpdmUiOnRydWUsImNyZWF0ZWRBdCI6IjIwMjYtMDktMDMgMTU6NDY6MjIuMjQxICswMDowMCIsInVwZGF0ZWRBdCI6IjIwMjYtMDktMDMgMTU6NDY6MjIuMjQxICswMDowMCIsImRlbGV0ZWRBdCI6bnVsbH0sImJpZCI6MjIsImlhdCI6MTc4ODQ1MDM4M30.vE0Z_6H0YSbVp2W5Fhv5Dg0Mlb3Ls9aLCTx6Xn97S7wlj5fjm6NyneIRyptdTin_i4k7EOpsraZRwUJGp82gAthmcj1NEJQPIbV4MdwVc1ceFwb7ny1UKzhipurDPTA1lu5ACzYmh8_D8OjrL7UlmM4Rjr1lAlgddHKl-G_QegY"
+        },
+        {
+          "name": "email",
+          "value": "1788450382075-Bernadette_Kuhn54@gmail.com"
+        }
+      ]
+    }
+  ]
 }

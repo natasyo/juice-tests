@@ -25,6 +25,7 @@ test.describe("Search", () => {
 
     test("Only products matching the search query are displayed in the list. Other products are hidden.   @regression", async ({
       searchPage,
+      page,
     }) => {
       const searchTerm = "Apple Juice";
       await searchPage.search(searchTerm);
@@ -39,7 +40,10 @@ test.describe("Search", () => {
       await searchPage.openProductCardDialog();
     });
 
-    test("add to basket", async ({ searchPage }) => {
+    test("add to basket", async ({ searchPage, page }) => {
+      await searchPage.showHideUserBtn.click();
+      await expect(searchPage.userEmailBtn).toBeVisible();
+      await page.keyboard.press("Escape");
       await assertAddToBasketIncreasesCount(searchPage);
     });
   });
