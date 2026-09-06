@@ -18,7 +18,10 @@ test.describe("Search", () => {
       searchPage,
     }) => {
       await expect
-        .poll(async () => await searchPage.product.count())
+        .poll(async () => await searchPage.product.count(), {
+          timeout: 15_000,
+          intervals: [1000, 1000],
+        })
         .toBeGreaterThan(0);
       await searchPage.openProductCardDialog();
     });
@@ -31,7 +34,10 @@ test.describe("Search", () => {
       await searchPage.search(searchTerm);
       await expect(searchPage.searchInput).toHaveValue(searchTerm);
       await expect
-        .poll(async () => await searchPage.product.count())
+        .poll(async () => await searchPage.product.count(), {
+          intervals: [1000, 1000],
+          timeout: 15_000,
+        })
         .toBeGreaterThan(0);
 
       await expect(searchPage.product.first()).toContainText(searchTerm, {

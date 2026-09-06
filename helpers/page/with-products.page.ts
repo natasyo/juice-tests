@@ -2,7 +2,7 @@ import test, { expect, Locator, Page } from "@playwright/test";
 import { BasePage } from "./base.page";
 import { PaginationComponent } from "../components/pagination.component";
 
-export class WithProductsPage extends BasePage {
+export abstract class WithProductsPage extends BasePage {
   readonly product: Locator;
   readonly productName: Locator;
   readonly addToBasket: Locator;
@@ -23,7 +23,7 @@ export class WithProductsPage extends BasePage {
     });
     this.paginator = new PaginationComponent(page);
   }
-
+  abstract open(): Promise<void>;
   async openProductCardDialog() {
     await this.product.first().click();
     await expect(this.productDetails).toBeVisible();
@@ -37,10 +37,8 @@ export class WithProductsPage extends BasePage {
 
   async addProductToBasket(num = 0) {
     await expect(this.addToBasket.nth(num)).toBeVisible({ timeout: 15_000 });
-    if (num === 0) await this.addToBasket.first().click();
-    else {
-      if ((await this.addToBasket.count()) > num)
-        await this.addToBasket.nth(num).click();
-    }
+
+    if ((await this.addToBasket.count()) > num)
+      await this.addToBasket.nth(num).click();
   }
 }

@@ -30,7 +30,7 @@ test.describe("Basket with auth", () => {
     basketPageAuth,
     page,
   }) => {
-    await assertTotalPrice(basketPageAuth, mainPage, page);
+    await assertTotalPrice(basketPageAuth, mainPage);
     await basketPageAuth.checkoutBtn.click();
     await expect(page).toHaveURL(/address/i);
   });

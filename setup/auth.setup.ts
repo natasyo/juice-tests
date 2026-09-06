@@ -1,6 +1,6 @@
 import { test as setup } from "@playwright/test";
 import fs from "fs";
-import { createUser } from "../helpers/register-user-api.helper";
+import { createUser } from "../helpers/api/register-user-api.helper";
 
 const authFile = ".auth/user.json";
 const sessionFile = ".auth/session.json";
@@ -46,9 +46,9 @@ setup("prepare db and authenticate", async ({ baseURL, request, page }) => {
   });
 
   // sessionStorage отдельно
-  const sessionStorage = await page.evaluate(() => ({
+  const sessionData = await page.evaluate(() => ({
     bid: window.sessionStorage.getItem("bid"),
   }));
 
-  fs.writeFileSync(sessionFile, JSON.stringify(sessionStorage, null, 2));
+  fs.writeFileSync(sessionFile, JSON.stringify(sessionData, null, 2));
 });
