@@ -1,5 +1,6 @@
 import { APIRequestContext, expect } from "@playwright/test";
 import { generateRigisterData } from "../../data/register.data";
+import { LoginRequestType, LoginResposeType } from "../../types/login.type";
 
 export async function createUser(
   request: APIRequestContext,
@@ -16,4 +17,16 @@ export async function createUser(
   });
   expect(response.ok()).toBeTruthy();
   return user;
+}
+
+export async function loginWithApi(
+  login: LoginRequestType,
+  request: APIRequestContext,
+  baseURL: string | undefined,
+): Promise<LoginResposeType> {
+  const response = await request.post(baseURL + "/rest/user/login", {
+    data: login,
+  });
+  expect(response.ok()).toBeTruthy();
+  return (await response.json()).authentication as LoginResposeType;
 }
