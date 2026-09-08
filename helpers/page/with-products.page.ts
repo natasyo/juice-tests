@@ -1,4 +1,4 @@
-import test, { expect, Locator, Page } from "@playwright/test";
+import { expect, Locator, Page } from "@playwright/test";
 import { BasePage } from "@helpers/page/base.page";
 import { PaginationComponent } from "@helpers/components/pagination.component";
 
@@ -38,7 +38,6 @@ export abstract class WithProductsPage extends BasePage {
   async addProductToBasket(num = 0) {
     await expect(this.addToBasket.nth(num)).toBeVisible({ timeout: 15_000 });
 
-    if ((await this.addToBasket.count()) > num)
-      await this.addToBasket.nth(num).click();
+    if ((await this.addToBasket.count()) > num) await this.addToBasket.nth(num).click();
   }
 }

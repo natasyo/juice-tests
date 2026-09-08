@@ -4,12 +4,7 @@ import prettier from "eslint-config-prettier";
 
 export default tseslint.config(
   {
-    ignores: [
-      "node_modules/**",
-      "playwright-report/**",
-      "test-results/**",
-      ".auth/**",
-    ],
+    ignores: ["node_modules/**", "playwright-report/**", "test-results/**", ".auth/**"],
   },
   js.configs.recommended,
   ...tseslint.configs.recommended,

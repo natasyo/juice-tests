@@ -15,18 +15,14 @@ export async function assertPagination(page: WithProductsPage) {
 
   await page.paginator.nextPage();
   // дожидаемся, что набор товаров реально сменился (первая → вторая страница)
-  await expect
-    .poll(async () => await page.productName.allInnerTexts())
-    .not.toEqual(productsFirst);
+  await expect.poll(async () => await page.productName.allInnerTexts()).not.toEqual(productsFirst);
   const productsSecond = await page.productName.allInnerTexts();
   expect(productsSecond).not.toEqual(productsFirst);
   await expect(page.paginator.previousPageButton).not.toBeDisabled();
 
   await page.paginator.previousPage();
   // дожидаемся, что вернулся исходный набор товаров (перечитываем по кругу)
-  await expect
-    .poll(async () => await page.productName.allInnerTexts())
-    .toEqual(productsFirst);
+  await expect.poll(async () => await page.productName.allInnerTexts()).toEqual(productsFirst);
   const productFirstNew = await page.productName.allInnerTexts();
   expect(productFirstNew).toEqual(productsFirst);
   await expect(page.paginator.previousPageButton).toBeDisabled();

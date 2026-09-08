@@ -42,11 +42,9 @@ export abstract class BasePage {
       const closeWelcomeBanner = this.page.getByRole("button", {
         name: "Close Welcome Banner",
       });
-      await closeWelcomeBanner
-        .waitFor({ state: "visible", timeout: 3000 })
-        .catch(() => {
-          console.log("Banner not found");
-        });
+      await closeWelcomeBanner.waitFor({ state: "visible", timeout: 3000 }).catch(() => {
+        console.log("Banner not found");
+      });
 
       if (await closeWelcomeBanner.isVisible()) {
         await closeWelcomeBanner.click();
@@ -55,15 +53,15 @@ export abstract class BasePage {
       const coockieBtn = this.page.getByRole("button", {
         name: "dismiss cookie message",
       });
-      await coockieBtn
-        .waitFor({ state: "visible", timeout: 3000 })
-        .catch(() => {
-          console.log("Coockie not found");
-        });
+      await coockieBtn.waitFor({ state: "visible", timeout: 3000 }).catch(() => {
+        console.log("Coockie not found");
+      });
       if (await coockieBtn.isVisible()) {
         await coockieBtn.click();
       }
-    } catch {}
+    } catch {
+      // banner / cookie may be absent — ignore
+    }
   }
   async getCountProductInPage() {
     return Number(await this.countProductsInCart.innerText());

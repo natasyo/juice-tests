@@ -1,8 +1,5 @@
 import { assertAddToBasketIncreasesCount } from "@helpers/assertions/basket.helper";
-import {
-  assertChangeCountInPage,
-  assertPagination,
-} from "@helpers/assertions/pagination";
+import { assertChangeCountInPage, assertPagination } from "@helpers/assertions/pagination";
 import { test } from "@tests/guest/main/main.fixture";
 
 test.describe("Main page guest", () => {

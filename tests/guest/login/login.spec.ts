@@ -1,5 +1,4 @@
-import { APIRequestContext, expect } from "@playwright/test";
-import { generateRegisterData } from "@data/register.data";
+import { expect } from "@playwright/test";
 import { test } from "@tests/guest/login/loginPage.fixture";
 import { createUser } from "@helpers/api/register-user-api.helper";
 
@@ -26,7 +25,6 @@ test.describe("Login", () => {
 
   test.describe("regression @regression", () => {
     test("Login with an incorrect password. An authentication error message is displayed, and the user is not logged in.", async ({
-      page,
       loginPage,
       request,
       baseURL,
@@ -39,7 +37,6 @@ test.describe("Login", () => {
     });
 
     test("Login with an unregistered email address. An authentication error message is displayed, and the user is not logged in.", async ({
-      page,
       loginPage,
       request,
       baseURL,
@@ -54,7 +51,6 @@ test.describe("Login", () => {
 
   test.describe("negative @negative", () => {
     test("Login with an empty input fields. The 'Login' button should be disabled", async ({
-      page,
       loginPage,
     }) => {
       await expect(loginPage.submitButton).toBeDisabled();
@@ -64,7 +60,6 @@ test.describe("Login", () => {
       page,
       loginPage,
     }) => {
-      const registerData = generateRegisterData();
       await loginPage.fillForm({
         email: "",
         password: "password",
@@ -77,7 +72,6 @@ test.describe("Login", () => {
     });
 
     test("Login with an empty password. The 'Login' button should be disabled", async ({
-      page,
       loginPage,
     }) => {
       await loginPage.fillForm({

@@ -2,10 +2,7 @@ import { expect, Page } from "@playwright/test";
 import { WithProductsPage } from "@helpers/page/with-products.page";
 import { BasketBasePage } from "@helpers/page/basketBasePage";
 
-export async function assertAddToBasketIncreasesCount(
-  page: WithProductsPage,
-  number = 0,
-) {
+export async function assertAddToBasketIncreasesCount(page: WithProductsPage, number = 0) {
   const before = await page.getBasketCount();
   await page.addProductToBasket(number);
   await expect
@@ -16,10 +13,7 @@ export async function assertAddToBasketIncreasesCount(
     .toBeGreaterThan(before);
 }
 
-export async function assertTotalPrice(
-  basketPage: BasketBasePage,
-  productPage: WithProductsPage,
-) {
+export async function assertTotalPrice(basketPage: BasketBasePage, productPage: WithProductsPage) {
   await productPage.open();
   await assertAddToBasketIncreasesCount(productPage, 1);
   await assertAddToBasketIncreasesCount(productPage, 1);
@@ -42,17 +36,11 @@ export async function assertTotalPrice(
       })
       .toEqual(sum);
     const total = await basketPage.getTotalCost();
-    const price = (await basketPage.totalPrice.innerText()).replace(
-      /[^\d.]/g,
-      "",
-    );
+    const price = (await basketPage.totalPrice.innerText()).replace(/[^\d.]/g, "");
     expect(+total).toEqual(+price);
   }
 }
-export async function assertEmptyBasket(
-  basketPage: BasketBasePage,
-  page: Page,
-) {
+export async function assertEmptyBasket(basketPage: BasketBasePage, page: Page) {
   await basketPage.open();
   await expect(page).toHaveURL(basketPage.url);
   await expect(basketPage.checkoutBtn).toBeVisible();

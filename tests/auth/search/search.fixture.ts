@@ -22,16 +22,14 @@ export const test = base.extend<SearchFixtures>({
     await searchPage.open();
     await expect(page).toHaveURL(searchPage.url);
 
-    await expect(
-      (await searchPage.searchInput.boundingBox())?.width ?? 0,
-    ).toBeLessThan(COLLAPSED_MAX_WIDTH);
+    await expect((await searchPage.searchInput.boundingBox())?.width ?? 0).toBeLessThan(
+      COLLAPSED_MAX_WIDTH,
+    );
 
     await searchPage.searchOpenBtn.click();
 
     await expect
-      .poll(
-        async () => (await searchPage.searchInput.boundingBox())?.width ?? 0,
-      )
+      .poll(async () => (await searchPage.searchInput.boundingBox())?.width ?? 0)
       .toBeGreaterThan(EXPANDED_MIN_WIDTH);
 
     await use(searchPage);

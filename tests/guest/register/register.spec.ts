@@ -53,27 +53,17 @@ test.describe("Register Page", () => {
     });
 
     test("Register a user with a missmatched password. After correcting the password, the error message should disappear", async ({
-      page,
       registerPage,
     }) => {
       const registerData = generateRegisterData();
       await registerPage.fillForm({
         ...registerData,
       });
-      await expect(registerPage.repeatPasswordInput).toHaveAttribute(
-        "aria-invalid",
-        "false",
-      );
+      await expect(registerPage.repeatPasswordInput).toHaveAttribute("aria-invalid", "false");
       await registerPage.repeatPasswordInput.fill("passw");
-      await expect(registerPage.repeatPasswordInput).toHaveAttribute(
-        "aria-invalid",
-        "true",
-      );
+      await expect(registerPage.repeatPasswordInput).toHaveAttribute("aria-invalid", "true");
       await registerPage.repeatPasswordInput.fill(registerData.repeatPassword);
-      await expect(registerPage.repeatPasswordInput).toHaveAttribute(
-        "aria-invalid",
-        "false",
-      );
+      await expect(registerPage.repeatPasswordInput).toHaveAttribute("aria-invalid", "false");
     });
 
     test("Register without choosing a security question. The field should show an error and the 'Register' button should stay disabled", async ({
@@ -100,7 +90,6 @@ test.describe("Register Page", () => {
 
   test.describe("negative @negative", () => {
     test("Register with an empty input fields. The 'Register' button should be disabled", async ({
-      page,
       registerPage,
     }) => {
       await expect(registerPage.submitButton).toBeDisabled();
@@ -121,39 +110,26 @@ test.describe("Register Page", () => {
       await expect(emailFailed.first()).toBeVisible();
       await expect(registerPage.submitButton).toBeDisabled();
     });
-    test("Register user with password less 5 symbol", async ({
-      page,
-      registerPage,
-    }) => {
+    test("Register user with password less 5 symbol", async ({ registerPage }) => {
       const registerData = generateRegisterData({ password: "12qw" });
       await registerPage.fillForm({
         ...registerData,
       });
-      await expect(registerPage.passwordInput).toHaveAttribute(
-        "aria-invalid",
-        "true",
-      );
+      await expect(registerPage.passwordInput).toHaveAttribute("aria-invalid", "true");
       await expect(registerPage.submitButton).toBeDisabled();
     });
-    test("Register user with password more 40 symbol", async ({
-      page,
-      registerPage,
-    }) => {
+    test("Register user with password more 40 symbol", async ({ registerPage }) => {
       const registerData = generateRegisterData({
         password: "12$qw12$qw12$qw12$qw12$qw12$qw12$qw12$qw12$qw",
       });
       await registerPage.fillForm({
         ...registerData,
       });
-      await expect(registerPage.passwordInput).toHaveAttribute(
-        "aria-invalid",
-        "true",
-      );
+      await expect(registerPage.passwordInput).toHaveAttribute("aria-invalid", "true");
       await expect(registerPage.submitButton).toBeDisabled();
     });
 
     test("Register a user with a password longer than 40 characters. After correcting the password, the error message should disappear", async ({
-      page,
       registerPage,
     }) => {
       const registerData = generateRegisterData({
@@ -162,17 +138,9 @@ test.describe("Register Page", () => {
       await registerPage.fillForm({
         ...registerData,
       });
-      await expect(registerPage.passwordInput).toHaveAttribute(
-        "aria-invalid",
-        "true",
-      );
-      await registerPage.passwordInput.fill(
-        "12$qw12$qw12$qw12$qw12$qw12$qw12$qw12$qw",
-      );
-      await expect(registerPage.passwordInput).toHaveAttribute(
-        "aria-invalid",
-        "false",
-      );
+      await expect(registerPage.passwordInput).toHaveAttribute("aria-invalid", "true");
+      await registerPage.passwordInput.fill("12$qw12$qw12$qw12$qw12$qw12$qw12$qw12$qw");
+      await expect(registerPage.passwordInput).toHaveAttribute("aria-invalid", "false");
     });
   });
 });

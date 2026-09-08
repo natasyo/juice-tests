@@ -25,15 +25,11 @@ export class BasketBasePage extends BasePage {
     const count = await this.rowItems.count();
     for (let i = 0; i < count; i++) {
       const item = this.rowItems.nth(i);
-      const countLocator = item.locator(
-        ".cdk-column-quantity span.cell-initial-font",
-      );
+      const countLocator = item.locator(".cdk-column-quantity span.cell-initial-font");
       const count = Number(await countLocator.innerText());
       const priceLocator = item.locator(".cdk-column-price");
       // console.log(Number((await priceLocator.innerText()).trim()));
-      const price = parseFloat(
-        (await priceLocator.innerText()).replace(/[^\d.]/g, ""),
-      );
+      const price = parseFloat((await priceLocator.innerText()).replace(/[^\d.]/g, ""));
       sum += price * count;
     }
     return sum;
