@@ -1,15 +1,13 @@
 import { faker } from "@faker-js/faker";
-import { RegisterType } from "@types/register.type";
+import { RegisterType } from "@models/register.type";
 
-export function generateRigisterData(
-  ovveride: Partial<RegisterType> = {},
-): RegisterType {
-  const password = ovveride.password ? ovveride.password : "Pass!123";
+export function generateRegisterData(overrides: Partial<RegisterType> = {}): RegisterType {
+  const password = overrides.password ? overrides.password : "Pass!123";
   return {
     email: `${Date.now()}-${faker.internet.email()}`,
     password,
     repeatPassword: password,
     securityAnswer: faker.lorem.word(),
-    ...ovveride,
+    ...overrides,
   };
 }

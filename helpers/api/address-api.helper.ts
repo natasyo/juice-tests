@@ -1,5 +1,5 @@
 import { APIRequestContext, expect } from "@playwright/test";
-import { AddressType } from "@types/address.type";
+import { AddressType } from "@models/address.type";
 import { generateAddressData } from "@data/address.data";
 
 export async function createAddress(

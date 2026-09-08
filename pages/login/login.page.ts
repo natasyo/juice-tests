@@ -1,6 +1,6 @@
 import { expect, Locator, Page } from "@playwright/test";
 
-import { LoginRequestType } from "@types/login.type";
+import { LoginRequestType } from "@models/login.type";
 import { BasePage } from "@helpers/page/base.page";
 
 export class LoginPage extends BasePage {

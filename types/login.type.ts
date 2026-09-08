@@ -3,7 +3,7 @@ export interface LoginRequestType {
   password: string;
 }
 
-export interface LoginResposeType {
+export interface LoginResponseType {
   token: string;
   bid: number;
   umail: string;

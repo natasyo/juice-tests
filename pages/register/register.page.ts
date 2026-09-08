@@ -1,6 +1,6 @@
-import { expect, Locator, Page } from "@playwright/test";
+import { Locator, Page } from "@playwright/test";
 
-import { RegisterType } from "@types/register.type";
+import { RegisterType } from "@models/register.type";
 import { BasePage } from "@helpers/page/base.page";
 
 export class RegisterPage extends BasePage {
@@ -28,9 +28,7 @@ export class RegisterPage extends BasePage {
       name: "Field to confirm the password",
     });
 
-    this.securityQuestionSelect = page.locator(
-      'mat-select[name="securityQuestion"]',
-    );
+    this.securityQuestionSelect = page.locator('mat-select[name="securityQuestion"]');
     this.securityAnswerInput = page.getByLabel("Answer");
     this.submitButton = page.getByRole("button", {
       name: "Button to complete the registration",
@@ -59,17 +57,13 @@ export class RegisterPage extends BasePage {
     const firstOption = listbox.locator("mat-option").first();
 
     for (let attempt = 0; attempt < 4; attempt++) {
-      await this.securityQuestionSelect.evaluate((el: HTMLElement) =>
-        el.click(),
-      );
+      await this.securityQuestionSelect.evaluate((el: HTMLElement) => el.click());
 
       try {
         await listbox.waitFor({ state: "visible", timeout: 3000 });
         await firstOption.waitFor({ state: "visible", timeout: 1500 });
         await firstOption.click();
-        await listbox
-          .waitFor({ state: "hidden", timeout: 1500 })
-          .catch(() => {});
+        await listbox.waitFor({ state: "hidden", timeout: 1500 }).catch(() => {});
         return;
       } catch {
         await this.page.keyboard.press("Escape").catch(() => {});

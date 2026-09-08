@@ -19,8 +19,7 @@ test.describe("Basket without auth", () => {
     const quantityText = await basketPageGuest.rowItems
       .locator(".cdk-column-quantity span.cell-initial-font")
       .innerText();
-    const productsInBasket =
-      await basketPageGuest.countProductsInCart.innerText();
+    const productsInBasket = await basketPageGuest.countProductsInCart.innerText();
     expect(Number(quantityText)).toEqual(Number(productsInBasket));
     await basketPageGuest.checkoutBtn.click();
     await expect(page).toHaveURL(/login/i);
@@ -30,15 +29,12 @@ test.describe("Basket without auth", () => {
     basketPageGuest,
     page,
   }) => {
-    await assertTotalPrice(basketPageGuest, mainPage, page);
+    await assertTotalPrice(basketPageGuest, mainPage);
     await basketPageGuest.checkoutBtn.click();
     await expect(page).toHaveURL(/login/i);
   });
 
-  test("User not logged in. Cart is empty.", async ({
-    page,
-    basketPageGuest,
-  }) => {
+  test("User not logged in. Cart is empty.", async ({ page, basketPageGuest }) => {
     await assertEmptyBasket(basketPageGuest, page);
   });
 });

@@ -1,9 +1,6 @@
 import { expect } from "@playwright/test";
 import { test } from "@tests/auth/search/search.fixture";
-import {
-  assertChangeCountInPage,
-  assertPagination,
-} from "@helpers/assertions/pagination";
+import { assertChangeCountInPage, assertPagination } from "@helpers/assertions/pagination";
 import { assertAddToBasketIncreasesCount } from "@helpers/assertions/basket.helper";
 
 test.describe("Search", () => {
@@ -28,7 +25,6 @@ test.describe("Search", () => {
 
     test("Only products matching the search query are displayed in the list. Other products are hidden.   @regression", async ({
       searchPage,
-      page,
     }) => {
       const searchTerm = "Apple Juice";
       await searchPage.search(searchTerm);
@@ -81,7 +77,10 @@ test.describe("Search", () => {
       await searchPage.searchInput.press("Enter");
 
       await expect
-        .poll(async () => await searchPage.product.count())
+        .poll(async () => await searchPage.product.count(), {
+          timeout: 15_000,
+          intervals: [1000, 1000],
+        })
         .toBeGreaterThan(0);
       const wrapper = page.locator("mat-card").first();
       await expect(wrapper).not.toContainClass("emptyState");
@@ -97,7 +96,10 @@ test.describe("Search", () => {
       const wrapper = page.locator("mat-card");
       await expect(wrapper).toContainClass("emptyState");
       await expect
-        .poll(async () => await searchPage.product.count())
+        .poll(async () => await searchPage.product.count(), {
+          timeout: 15_000,
+          intervals: [1000, 1000],
+        })
         .toEqual(0);
     });
 

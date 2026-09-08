@@ -1,15 +1,11 @@
 import { expect } from "@playwright/test";
 import {
-  assertAddToBasketIncreasesCount,
   assertEmptyBasket,
   assertTotalPrice,
   checkOneProductInBasket,
 } from "@helpers/assertions/basket.helper";
 import { test } from "@tests/guest/basket_with_auth/basket.fixture";
-import {
-  createUser,
-  loginWithApi,
-} from "@helpers/api/register-user-api.helper";
+import { createUser, loginWithApi } from "@helpers/api/register-user-api.helper";
 import { createAddress } from "@helpers/api/address-api.helper";
 
 test.describe("Basket with auth", () => {
@@ -20,7 +16,7 @@ test.describe("Basket with auth", () => {
       request,
       baseURL,
     );
-    const address = await createAddress(request, baseURL, login.token);
+    await createAddress(request, baseURL, login.token);
     await page.addInitScript(
       ({ token, email }) => {
         localStorage.setItem("token", token);
@@ -32,11 +28,7 @@ test.describe("Basket with auth", () => {
       sessionStorage.setItem("bid", String(bid));
     }, login.bid);
   });
-  test("User can add 1 product  @regression", async ({
-    mainPage,
-    basketPageAuth,
-    page,
-  }) => {
+  test("User can add 1 product  @regression", async ({ mainPage, basketPageAuth, page }) => {
     await checkOneProductInBasket(basketPageAuth, mainPage);
     await expect(page).toHaveURL(/address/i);
   });

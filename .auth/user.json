@@ -1,16 +1,27 @@
 {
-  "cookies": [],
+  "cookies": [
+    {
+      "name": "language",
+      "value": "en",
+      "domain": "localhost",
+      "path": "/",
+      "expires": 1820392414,
+      "httpOnly": false,
+      "secure": false,
+      "sameSite": "Lax"
+    }
+  ],
   "origins": [
     {
       "origin": "http://localhost:3000",
       "localStorage": [
         {
           "name": "token",
-          "value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJkYXRhIjp7ImlkIjo0OSwidXNlcm5hbWUiOiIiLCJlbWFpbCI6IjE3ODg4NTQ5MDc2NTAtVmlja2llX1NpcGVzLVdhbHRlckBob3RtYWlsLmNvbSIsInBhc3N3b3JkIjoiYTA3MThjOTZlYzUyZmQ0MWZjNDVlM2U2ZTk3MTg4ODUiLCJyb2xlIjoiY3VzdG9tZXIiLCJkZWx1eGVUb2tlbiI6IiIsImxhc3RMb2dpbklwIjoiMC4wLjAuMCIsInByb2ZpbGVJbWFnZSI6Ii9hc3NldHMvcHVibGljL2ltYWdlcy91cGxvYWRzL2RlZmF1bHQuc3ZnIiwidG90cFNlY3JldCI6IiIsImlzQWN0aXZlIjp0cnVlLCJjcmVhdGVkQXQiOiIyMDI2LTA5LTA4IDA4OjA4OjI3Ljc3MSArMDA6MDAiLCJ1cGRhdGVkQXQiOiIyMDI2LTA5LTA4IDA4OjA4OjI3Ljc3MSArMDA6MDAiLCJkZWxldGVkQXQiOm51bGx9LCJiaWQiOjE5LCJpYXQiOjE3ODg4NTQ5MDl9.ks3BH-VMR4oD-kZb_YQVxJs5CRTwWq5g20dZZJ1oprtpAVPe86D8QBInQUdYBrfuF0L84cEtW2pdm_ZjRYNbVuh8MvX4WpUbHk5tUiPsM4qibfuwWhqWhkYqW5IwGg9fLuAh-j_fOSdQK1Ijcxhm26Kd-mzLRyKT1zo_XIDzXoU"
+          "value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJkYXRhIjp7ImlkIjoxMDAsInVzZXJuYW1lIjoiIiwiZW1haWwiOiIxNzg4ODU2NDExNzU2LUR1bmNhbi5XaGl0ZTk2QGdtYWlsLmNvbSIsInBhc3N3b3JkIjoiYTA3MThjOTZlYzUyZmQ0MWZjNDVlM2U2ZTk3MTg4ODUiLCJyb2xlIjoiY3VzdG9tZXIiLCJkZWx1eGVUb2tlbiI6IiIsImxhc3RMb2dpbklwIjoiMC4wLjAuMCIsInByb2ZpbGVJbWFnZSI6Ii9hc3NldHMvcHVibGljL2ltYWdlcy91cGxvYWRzL2RlZmF1bHQuc3ZnIiwidG90cFNlY3JldCI6IiIsImlzQWN0aXZlIjp0cnVlLCJjcmVhdGVkQXQiOiIyMDI2LTA5LTA4IDA4OjMzOjMxLjg0NiArMDA6MDAiLCJ1cGRhdGVkQXQiOiIyMDI2LTA5LTA4IDA4OjMzOjMxLjg0NiArMDA6MDAiLCJkZWxldGVkQXQiOm51bGx9LCJiaWQiOjQ2LCJpYXQiOjE3ODg4NTY0MTR9.lPrl8pDqRFVoiAEJXYP0GT5tDLIU_o1QTStIfhdbzPaXcYU3eFqPu_5NtjZIIjeDZ7C2Im9KlQplaC70HZ54XrlJPzqOWRhwawDvefRDiJqChcZOUZs0v2WGHx5o53v_G16P6px0LdTupCxKiiff-xbGKtDm5H7n49rlYFG2MqY"
         },
         {
           "name": "email",
-          "value": "1788854907650-Vickie_Sipes-Walter@hotmail.com"
+          "value": "1788856411756-Duncan.White96@gmail.com"
         }
       ]
     }

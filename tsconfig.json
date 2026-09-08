@@ -1,1 +1,20 @@
-{"compilerOptions":{"target":"ES2022","module":"commonjs","moduleResolution":"node","baseUrl":".","paths":{"@helpers/*":["helpers/*"],"@pages/*":["pages/*"],"@types/*":["types/*"],"@data/*":["data/*"],"@tests/*":["tests/*"],"@setup/*":["setup/*"]},"esModuleInterop":true,"skipLibCheck":true,"strict":true,"types":["node"]},"include":["**/*.ts","playwright.config.ts"]}
+{
+  "compilerOptions": {
+    "target": "ES2022",
+    "module": "preserve",
+    "moduleResolution": "bundler",
+    "paths": {
+      "@helpers/*": ["./helpers/*"],
+      "@pages/*": ["./pages/*"],
+      "@models/*": ["./types/*"],
+      "@data/*": ["./data/*"],
+      "@tests/*": ["./tests/*"],
+      "@setup/*": ["./setup/*"]
+    },
+    "esModuleInterop": true,
+    "skipLibCheck": true,
+    "strict": true,
+    "types": ["node"]
+  },
+  "include": ["**/*.ts", "playwright.config.ts"]
+}

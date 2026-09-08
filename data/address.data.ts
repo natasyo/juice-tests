@@ -1,9 +1,7 @@
 import { faker } from "@faker-js/faker";
-import { AddressType } from "@types/address.type";
+import { AddressType } from "@models/address.type";
 
-export function generateAddressData(
-  overrides: Partial<AddressType> = {},
-): AddressType {
+export function generateAddressData(overrides: Partial<AddressType> = {}): AddressType {
   return {
     city: faker.location.city(),
     country: faker.location.country(),

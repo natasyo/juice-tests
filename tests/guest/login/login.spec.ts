@@ -1,5 +1,5 @@
 import { APIRequestContext, expect } from "@playwright/test";
-import { generateRigisterData } from "@data/register.data";
+import { generateRegisterData } from "@data/register.data";
 import { test } from "@tests/guest/login/loginPage.fixture";
 import { createUser } from "@helpers/api/register-user-api.helper";
 
@@ -64,7 +64,7 @@ test.describe("Login", () => {
       page,
       loginPage,
     }) => {
-      const registerData = generateRigisterData();
+      const registerData = generateRegisterData();
       await loginPage.fillForm({
         email: "",
         password: "password",

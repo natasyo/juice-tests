@@ -1,5 +1,5 @@
 import { expect } from "@playwright/test";
-import { generateRigisterData } from "@data/register.data";
+import { generateRegisterData } from "@data/register.data";
 import { test } from "@tests/guest/register/registerPage.fixture";
 
 // test.describe.configure({ mode: "serial" });
@@ -10,7 +10,7 @@ test.describe("Register Page", () => {
       page,
       registerPage,
     }) => {
-      const registerData = generateRigisterData();
+      const registerData = generateRegisterData();
       await registerPage.fillForm({
         ...registerData,
       });
@@ -26,7 +26,7 @@ test.describe("Register Page", () => {
       page,
       registerPage,
     }) => {
-      const registerData = generateRigisterData();
+      const registerData = generateRegisterData();
 
       await registerPage.fillForm({
         ...registerData,
@@ -38,7 +38,7 @@ test.describe("Register Page", () => {
 
       await page.goto(registerPage.url);
 
-      const duplicateRegisterData = generateRigisterData({
+      const duplicateRegisterData = generateRegisterData({
         email: registerData.email,
       });
       await registerPage.fillForm({
@@ -56,7 +56,7 @@ test.describe("Register Page", () => {
       page,
       registerPage,
     }) => {
-      const registerData = generateRigisterData();
+      const registerData = generateRegisterData();
       await registerPage.fillForm({
         ...registerData,
       });
@@ -80,7 +80,7 @@ test.describe("Register Page", () => {
       page,
       registerPage,
     }) => {
-      const registerData = generateRigisterData();
+      const registerData = generateRegisterData();
 
       await registerPage.fillInputs(registerData);
 
@@ -110,7 +110,7 @@ test.describe("Register Page", () => {
       page,
       registerPage,
     }) => {
-      const registerData = generateRigisterData();
+      const registerData = generateRegisterData();
       await registerPage.fillForm({
         ...registerData,
         email: "",
@@ -125,7 +125,7 @@ test.describe("Register Page", () => {
       page,
       registerPage,
     }) => {
-      const registerData = generateRigisterData({ password: "12qw" });
+      const registerData = generateRegisterData({ password: "12qw" });
       await registerPage.fillForm({
         ...registerData,
       });
@@ -139,7 +139,7 @@ test.describe("Register Page", () => {
       page,
       registerPage,
     }) => {
-      const registerData = generateRigisterData({
+      const registerData = generateRegisterData({
         password: "12$qw12$qw12$qw12$qw12$qw12$qw12$qw12$qw12$qw",
       });
       await registerPage.fillForm({
@@ -156,7 +156,7 @@ test.describe("Register Page", () => {
       page,
       registerPage,
     }) => {
-      const registerData = generateRigisterData({
+      const registerData = generateRegisterData({
         password: "12$qw12$qw12$qw12$qw12$qw12$qw12$qw12$qw12$qw",
       });
       await registerPage.fillForm({
