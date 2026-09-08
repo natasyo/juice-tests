@@ -1,5 +1,6 @@
 import { expect } from "@playwright/test";
 import {
+  assertCompleteCheckout,
   assertEmptyBasket,
   assertTotalPrice,
   checkOneProductInBasket,
@@ -7,6 +8,7 @@ import {
 import { test } from "@tests/guest/basket_with_auth/basket.fixture";
 import { createUser, loginWithApi } from "@helpers/api/register-user-api.helper";
 import { createAddress } from "@helpers/api/address-api.helper";
+import { createCard } from "@helpers/api/card-api.helper";
 
 test.describe("Basket with auth", () => {
   test.beforeEach(async ({ baseURL, request, page }) => {
@@ -17,6 +19,7 @@ test.describe("Basket with auth", () => {
       baseURL,
     );
     await createAddress(request, baseURL, login.token);
+    await createCard(request, baseURL, login.token);
     await page.addInitScript(
       ({ token, email }) => {
         localStorage.setItem("token", token);
@@ -28,18 +31,42 @@ test.describe("Basket with auth", () => {
       sessionStorage.setItem("bid", String(bid));
     }, login.bid);
   });
-  test("User can add 1 product  @regression", async ({ mainPage, basketPageAuth, page }) => {
+  test("User can add 1 product  @regression", async ({
+    mainPage,
+    basketPageAuth,
+    page,
+    addressSelectPage,
+    deliveryPage,
+    paymentPage,
+    orderSummaryPage,
+  }) => {
     await checkOneProductInBasket(basketPageAuth, mainPage);
-    await expect(page).toHaveURL(/address/i);
+    await assertCompleteCheckout(
+      page,
+      addressSelectPage,
+      deliveryPage,
+      paymentPage,
+      orderSummaryPage,
+    );
   });
   test("User can add 2 products, verify basket quantity, and is redirected to address/select  @regression", async ({
     mainPage,
     basketPageAuth,
+    addressSelectPage,
+    deliveryPage,
+    paymentPage,
+    orderSummaryPage,
     page,
   }) => {
     await assertTotalPrice(basketPageAuth, mainPage);
     await basketPageAuth.checkoutBtn.click();
-    await expect(page).toHaveURL(/address/i);
+    await assertCompleteCheckout(
+      page,
+      addressSelectPage,
+      deliveryPage,
+      paymentPage,
+      orderSummaryPage,
+    );
   });
 
   test(" Cart is empty.", async ({ page, basketPageAuth }) => {
