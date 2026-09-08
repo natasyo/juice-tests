@@ -1,6 +1,6 @@
 import test, { expect, Locator, Page } from "@playwright/test";
-import { BasePage } from "./base.page";
-import { PaginationComponent } from "../components/pagination.component";
+import { BasePage } from "@helpers/page/base.page";
+import { PaginationComponent } from "@helpers/components/pagination.component";
 
 export abstract class WithProductsPage extends BasePage {
   readonly product: Locator;

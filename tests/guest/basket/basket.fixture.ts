@@ -1,15 +1,15 @@
 import { test as base, expect } from "@playwright/test";
-import { BasketGuestPage } from "./basket.page";
-import { MainPage } from "../main/main.page";
+import { BasketPage } from "@pages/basket/basket.page";
+import { MainPage } from "@pages/main/main.page";
 
 type BasketFixtureGuest = {
-  basketPageGuest: BasketGuestPage;
+  basketPageGuest: BasketPage;
   mainPage: MainPage;
 };
 
 export const test = base.extend<BasketFixtureGuest>({
   basketPageGuest: async ({ page }, use) => {
-    const basket = new BasketGuestPage(page);
+    const basket = new BasketPage(page);
     await use(basket);
   },
   mainPage: async ({ page }, use) => {

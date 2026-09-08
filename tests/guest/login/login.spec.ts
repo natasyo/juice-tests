@@ -1,7 +1,7 @@
 import { APIRequestContext, expect } from "@playwright/test";
-import { generateRigisterData } from "../../../data/register.data";
-import { test } from "./loginPage.fixture";
-import { createUser } from "../../../helpers/api/register-user-api.helper";
+import { generateRigisterData } from "@data/register.data";
+import { test } from "@tests/guest/login/loginPage.fixture";
+import { createUser } from "@helpers/api/register-user-api.helper";
 
 test.describe("Login", () => {
   test.describe("smoke @smoke", () => {

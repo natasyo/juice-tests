@@ -1,5 +1,5 @@
 import { test as base, expect } from "@playwright/test";
-import { MainPage } from "./main.page";
+import { MainPage } from "@pages/main/main.page";
 
 type MainFixtures = {
   mainPage: MainPage;

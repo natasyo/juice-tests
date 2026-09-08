@@ -1,5 +1,5 @@
 import { Locator, Page } from "@playwright/test";
-import { BasePage } from "./base.page";
+import { BasePage } from "@helpers/page/base.page";
 
 export class BasketBasePage extends BasePage {
   url = "#/basket";

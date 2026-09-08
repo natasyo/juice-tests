@@ -1,9 +1,9 @@
-import { assertAddToBasketIncreasesCount } from "../../../helpers/assertions/basket.helper";
+import { assertAddToBasketIncreasesCount } from "@helpers/assertions/basket.helper";
 import {
   assertChangeCountInPage,
   assertPagination,
-} from "../../../helpers/assertions/pagination";
-import { test } from "./main.fixture";
+} from "@helpers/assertions/pagination";
+import { test } from "@tests/guest/main/main.fixture";
 
 test.describe("Main page guest", () => {
   test.describe("smoke @smoke", async () => {

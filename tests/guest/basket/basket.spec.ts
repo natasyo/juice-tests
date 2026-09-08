@@ -3,8 +3,8 @@ import {
   assertAddToBasketIncreasesCount,
   assertEmptyBasket,
   assertTotalPrice,
-} from "../../../helpers/assertions/basket.helper";
-import { test } from "./basket.fixture";
+} from "@helpers/assertions/basket.helper";
+import { test } from "@tests/guest/basket/basket.fixture";
 
 test.describe("Basket without auth", () => {
   test("Guest user can add 1 product and is redirected to login on checkout @regression", async ({

@@ -1,6 +1,6 @@
 import { test as base, expect } from "@playwright/test";
 import fs from "fs";
-import { SearchPage } from "./search.page";
+import { SearchPage } from "@pages/search/search.page";
 
 type SearchFixtures = {
   searchPage: SearchPage;

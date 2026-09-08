@@ -1,5 +1,5 @@
 import { Locator, Page } from "@playwright/test";
-import { WithProductsPage } from "../../../helpers/page/with-products.page";
+import { WithProductsPage } from "@helpers/page/with-products.page";
 
 export class SearchPage extends WithProductsPage {
   readonly url = "#/search";

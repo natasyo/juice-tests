@@ -1,6 +1,6 @@
 import { APIRequestContext, expect } from "@playwright/test";
-import { generateRigisterData } from "../../data/register.data";
-import { LoginRequestType, LoginResposeType } from "../../types/login.type";
+import { generateRigisterData } from "@data/register.data";
+import { LoginRequestType, LoginResposeType } from "@types/login.type";
 
 export async function createUser(
   request: APIRequestContext,

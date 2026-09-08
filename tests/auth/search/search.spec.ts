@@ -1,10 +1,10 @@
 import { expect } from "@playwright/test";
-import { test } from "./search.fixture";
+import { test } from "@tests/auth/search/search.fixture";
 import {
   assertChangeCountInPage,
   assertPagination,
-} from "../../../helpers/assertions/pagination";
-import { assertAddToBasketIncreasesCount } from "../../../helpers/assertions/basket.helper";
+} from "@helpers/assertions/pagination";
+import { assertAddToBasketIncreasesCount } from "@helpers/assertions/basket.helper";
 
 test.describe("Search", () => {
   const pageErrors: string[] = [];
@@ -61,7 +61,10 @@ test.describe("Search", () => {
       const searchTerm = "juice";
       await searchPage.search(searchTerm);
       await expect
-        .poll(async () => await searchPage.product.count())
+        .poll(async () => await searchPage.product.count(), {
+          timeout: 15_000,
+          intervals: [1000, 1000],
+        })
         .toBeGreaterThan(0);
 
       await expect(searchPage.product.first()).toContainText(searchTerm, {

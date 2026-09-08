@@ -1,8 +1,7 @@
-import { APIRequestContext, expect, Locator, Page } from "@playwright/test";
+import { expect, Locator, Page } from "@playwright/test";
 
-import { LoginType } from "../../../types/login.type";
-import { createUser } from "../../../helpers/register-user-api.helper";
-import { BasePage } from "../../../helpers/page/base.page";
+import { LoginRequestType } from "@types/login.type";
+import { BasePage } from "@helpers/page/base.page";
 
 export class LoginPage extends BasePage {
   readonly emailInput: Locator;
@@ -26,12 +25,12 @@ export class LoginPage extends BasePage {
     await this.goTo(this.url);
   }
 
-  async fillForm(loginData: LoginType) {
+  async fillForm(loginData: LoginRequestType) {
     await this.emailInput.fill(loginData.email);
     await this.passwordInput.fill(loginData.password);
   }
 
-  async loginWithError(loginData: LoginType) {
+  async loginWithError(loginData: LoginRequestType) {
     await this.fillForm({
       email: loginData.email,
       password: loginData.password,

@@ -1,5 +1,5 @@
 import { expect, test } from "@playwright/test";
-import { WithProductsPage } from "../page/with-products.page";
+import { WithProductsPage } from "@helpers/page/with-products.page";
 
 export async function assertPagination(page: WithProductsPage) {
   await expect(page.paginator.previousPageButton).toBeDisabled();

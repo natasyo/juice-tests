@@ -1,6 +1,6 @@
 import { test as setup } from "@playwright/test";
 import fs from "fs";
-import { createUser } from "../helpers/api/register-user-api.helper";
+import { createUser } from "@helpers/api/register-user-api.helper";
 
 const authFile = ".auth/user.json";
 const sessionFile = ".auth/session.json";

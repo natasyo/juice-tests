@@ -3,12 +3,14 @@ import {
   assertAddToBasketIncreasesCount,
   assertEmptyBasket,
   assertTotalPrice,
-} from "../../../helpers/assertions/basket.helper";
-import { test } from "./basket.fixture";
+  checkOneProductInBasket,
+} from "@helpers/assertions/basket.helper";
+import { test } from "@tests/guest/basket_with_auth/basket.fixture";
 import {
   createUser,
   loginWithApi,
-} from "../../../helpers/api/register-user-api.helper";
+} from "@helpers/api/register-user-api.helper";
+import { createAddress } from "@helpers/api/address-api.helper";
 
 test.describe("Basket with auth", () => {
   test.beforeEach(async ({ baseURL, request, page }) => {
@@ -18,6 +20,7 @@ test.describe("Basket with auth", () => {
       request,
       baseURL,
     );
+    const address = await createAddress(request, baseURL, login.token);
     await page.addInitScript(
       ({ token, email }) => {
         localStorage.setItem("token", token);
@@ -32,19 +35,10 @@ test.describe("Basket with auth", () => {
   test("User can add 1 product  @regression", async ({
     mainPage,
     basketPageAuth,
+    page,
   }) => {
-    await mainPage.open();
-    await assertAddToBasketIncreasesCount(mainPage);
-    await mainPage.cartBtn.click();
-    await expect(basketPageAuth.basketHeader).toBeVisible();
-    const quantityText = await basketPageAuth.rowItems
-      .locator(".cdk-column-quantity span.cell-initial-font")
-      .innerText();
-    await expect(quantityText.length).toBeGreaterThan(0);
-    const productsInBasket =
-      await basketPageAuth.countProductsInCart.innerText();
-    expect(Number(quantityText)).toEqual(Number(productsInBasket));
-    await basketPageAuth.checkoutBtn.click();
+    await checkOneProductInBasket(basketPageAuth, mainPage);
+    await expect(page).toHaveURL(/address/i);
   });
   test("User can add 2 products, verify basket quantity, and is redirected to address/select  @regression", async ({
     mainPage,

@@ -1,5 +1,5 @@
 import { test as base, expect } from "@playwright/test";
-import { RegisterPage } from "./register.page";
+import { RegisterPage } from "@pages/register/register.page";
 
 type RegisterFixtures = {
   registerPage: RegisterPage;

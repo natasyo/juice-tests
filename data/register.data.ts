@@ -1,5 +1,5 @@
 import { faker } from "@faker-js/faker";
-import { RegisterType } from "../types/register.type";
+import { RegisterType } from "@types/register.type";
 
 export function generateRigisterData(
   ovveride: Partial<RegisterType> = {},
