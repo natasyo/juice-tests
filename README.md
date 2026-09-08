@@ -49,23 +49,28 @@ curl http://localhost:3000
 
 ```
 juice/
-├── data/                # Генерация тестовых данных (faker) — register.data.ts
+├── data/                # Генерация тестовых данных (faker) — register.data.ts, address.data.ts
 ├── helpers/
+│   ├── api/             # Подготовка данных через API (createUser, loginWithApi, createAddress)
 │   ├── assertions/      # Кастомные проверки (basket, pagination)
 │   ├── components/      # UI-компоненты (pagination)
-│   ├── page/            # Page Object Model (BasePage, BasketBasePage, WithProducts)
-│   └── register-user-api.helper.ts  # Создание пользователя через API
-├── types/               # TypeScript-типы (login.type.ts, register.type.ts)
+│   └── page/            # Page Object Model (BasePage, BasketBasePage, WithProducts)
+├── pages/               # Страницы приложения (search, login, main, register, basket)
+├── types/               # TypeScript-типы (login.type.ts, register.type.ts, address.type.ts)
 ├── setup/               # Глобальная подготовка (auth.setup.ts)
 ├── tests/
-│   ├── auth/            # Тесты для авторизованного пользователя
+│   ├── auth/            # Тесты для авторизованного пользователя (storageState)
 │   │   └── search/      # Поиск (spec, page, fixture)
 │   └── guest/           # Тесты для гостя
-│       ├── basket/      # Корзина без авторизации
-│       ├── login/       # Логин
-│       ├── main/        # Главная страница
-│       └── register/    # Регистрация
+│       ├── basket/              # Корзина без авторизации
+│       ├── basket_with_auth/    # Корзина с авторизацией (пользователь создаётся в beforeEach через API)
+│       ├── login/               # Логин
+│       ├── main/                # Главная страница
+│       └── register/            # Регистрация
 ├── playwright.config.ts # Конфигурация Playwright
+├── tsconfig.json        # TypeScript-конфигурация + алиасы путей (@helpers/*, @pages/*, @models/* и др.)
+├── eslint.config.mjs    # Конфигурация ESLint
+├── .prettierrc          # Конфигурация Prettier
 └── test-results/        # Артефакты прогона (создаётся автоматически)
 ```
 
@@ -74,7 +79,7 @@ juice/
 Запустить все тесты:
 
 ```bash
-npx playwright test
+npm test
 ```
 
 Запустить конкретный файл:
@@ -93,7 +98,33 @@ npx playwright test --grep "@regression"
 Запуск в headed-режиме (с окном браузера):
 
 ```bash
-npx playwright test --headed
+npm run test:headed
+```
+
+Запуск в UI-режиме:
+
+```bash
+npm run test:ui
+```
+
+## Линтинг и форматирование
+
+Проверить код линтером:
+
+```bash
+npm run lint
+```
+
+Отформатировать код (Prettier):
+
+```bash
+npm run format
+```
+
+Проверить форматирование без изменения файлов:
+
+```bash
+npm run format:check
 ```
 
 ## Запуск в нескольких браузерах
@@ -148,10 +179,13 @@ npx playwright show-trace test-results/<имя-теста>/trace.zip
 
 ```bash
 # Интерактивная генерация кода
-npx playwright codegen http://localhost:3000
+npm run codegen
 
 # Список всех тестов без запуска
-npx playwright test --list
+npm run test:list
+
+# Открыть HTML-отчёт
+npm run test:report
 ```
 
 ## Примечания
