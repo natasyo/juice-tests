@@ -1,11 +1,17 @@
-# Juice Shop — E2E тесты (Playwright)
+# Juice Shop — E2E и API тесты (Playwright)
 
-Автотесты интерфейса для [OWASP Juice Shop](https://owasp.org/www-project-juice-shop/) на базе [Playwright Test](https://playwright.dev/).
+Автотесты для [OWASP Juice Shop](https://owasp.org/www-project-juice-shop/) на базе [Playwright Test](https://playwright.dev/).
+
+В проекте уже есть:
+- UI E2E тесты для авторизованного и гостевого сценариев
+- API тесты для регистрации и других endpoint-ов
+- подготовка auth state через API (`setup/auth.setup.ts`)
+- общие helper-ы для API и assertions
 
 ## Требования
 
 - Node.js 18+
-- Запущенное приложение Juice Shop на `http://localhost:3000` (перед запуском тестов)
+- Запущенное приложение Juice Shop на `http://localhost:3000`
 - Установленные зависимости: `npm install`
 
 ## Установка
@@ -17,13 +23,13 @@ npx playwright install
 
 ## Запуск приложения (Docker)
 
-Перед запуском тестов поднимите Juice Shop в Docker-контейнере:
+Перед запуском тестов поднимите Juice Shop в контейнере:
 
 ```bash
 docker run -d -p 3000:3000 --name juice-shop bkimminich/juice-shop
 ```
 
-Полезные команды для управления контейнером:
+Полезные команды:
 
 ```bash
 # Остановить контейнер
@@ -47,61 +53,101 @@ curl http://localhost:3000
 
 ## Структура проекта
 
-```
+```text
 juice/
-├── data/                # Генерация тестовых данных (faker) — register.data.ts, address.data.ts
+├── data/                 # Тестовые данные (faker)
+│   ├── register.data.ts
+│   ├── address.data.ts
+│   └── card.data.ts
 ├── helpers/
-│   ├── api/             # Подготовка данных через API (createUser, loginWithApi, createAddress)
-│   ├── assertions/      # Кастомные проверки (basket, pagination)
-│   ├── components/      # UI-компоненты (pagination)
-│   └── page/            # Page Object Model (BasePage, BasketBasePage, WithProducts)
-├── pages/               # Страницы приложения (search, login, main, register, basket)
-├── types/               # TypeScript-типы (login.type.ts, register.type.ts, address.type.ts)
-├── setup/               # Глобальная подготовка (auth.setup.ts)
+│   ├── api/              # API helper-ы для работы с REST endpoint-ами
+│   │   ├── register-user-api.helper.ts
+│   │   └── ...
+│   ├── assertions/       # Кастомные проверки для UI
+│   │   ├── basket.helper.ts
+│   │   └── pagination.ts
+│   ├── components/       # UI компоненты
+│   └── page/             # BasePage, Page Object Model
+├── pages/                # Page Objects по страницам приложения
+├── types/                # TypeScript типы
+├── setup/
+│   └── auth.setup.ts     # Создаёт пользователя через API и сохраняет storageState
 ├── tests/
-│   ├── auth/            # Тесты для авторизованного пользователя (storageState)
-│   │   └── search/      # Поиск (spec, page, fixture)
-│   └── guest/           # Тесты для гостя
-│       ├── basket/              # Корзина без авторизации
-│       ├── basket_with_auth/    # Корзина с авторизацией (пользователь создаётся в beforeEach через API)
-│       ├── login/               # Логин
-│       ├── main/                # Главная страница
-│       └── register/            # Регистрация
-├── playwright.config.ts # Конфигурация Playwright
-├── tsconfig.json        # TypeScript-конфигурация + алиасы путей (@helpers/*, @pages/*, @models/* и др.)
-├── eslint.config.mjs    # Конфигурация ESLint
-├── .prettierrc          # Конфигурация Prettier
-└── test-results/        # Артефакты прогона (создаётся автоматически)
+│   ├── api/              # API-тесты
+│   │   └── register-api.spec.ts
+│   ├── auth/             # Тесты для авторизованного пользователя
+│   │   └── search/
+│   └── guest/            # Тесты для гостя
+│       ├── basket/
+│       ├── basket_with_auth/
+│       ├── login/
+│       ├── main/
+│       └── register/
+├── playwright.config.ts  # Конфигурация Playwright
+├── tsconfig.json         # Aliases @helpers, @pages, @data, @models
+├── eslint.config.mjs     # ESLint
+├── package.json          # Сценарии запуска
+a├── .github/
+│   └── workflows/
+│       └── playwright.yml
+├── test-results/
+├── playwright-report/
+├── .auth/
+└── README.md
 ```
 
 ## Запуск тестов
 
-Запустить все тесты:
+### Все тесты
 
 ```bash
 npm test
 ```
 
-Запустить конкретный файл:
+### Конкретный UI-файл
 
 ```bash
 npx playwright test tests/auth/search/search.spec.ts
 ```
 
-Запустить тесты по тегу:
+### Конкретный API-файл
+
+```bash
+npx playwright test tests/api/register-api.spec.ts
+```
+
+### Только API-проект
+
+```bash
+npx playwright test --project=api
+```
+
+### Только auth UI-проект
+
+```bash
+npx playwright test --project=auth-chromium
+```
+
+### Только guest UI-проект
+
+```bash
+npx playwright test --project=guest-chromium
+```
+
+### По тегам
 
 ```bash
 npx playwright test --grep "@smoke"
 npx playwright test --grep "@regression"
 ```
 
-Запуск в headed-режиме (с окном браузера):
+### headed режим
 
 ```bash
 npm run test:headed
 ```
 
-Запуск в UI-режиме:
+### UI режим
 
 ```bash
 npm run test:ui
@@ -109,55 +155,36 @@ npm run test:ui
 
 ## Линтинг и форматирование
 
-Проверить код линтером:
-
 ```bash
 npm run lint
-```
-
-Отформатировать код (Prettier):
-
-```bash
 npm run format
-```
-
-Проверить форматирование без изменения файлов:
-
-```bash
 npm run format:check
 ```
 
 ## Запуск в нескольких браузерах
 
-По умолчанию тесты запускаются в трёх браузерах: **Chromium**, **Firefox** и **WebKit**.
+По умолчанию проект запускает тесты в браузерах:
+- Chromium
+- Firefox
+- WebKit
 
-Запустить в конкретном браузере (по имени проекта):
+Примеры:
 
 ```bash
 npx playwright test --project=auth-chromium
 npx playwright test --project=guest-firefox
-npx playwright test --project=auth-webkit
+npx playwright test --project=api
 ```
 
-Запустить только тесты авторизованного пользователя во всех браузерах:
-
-```bash
-npx playwright test --project=auth-*
-```
-
-Чтобы изменить набор браузеров, отредактируйте массив `browsers` в `playwright.config.ts`.
-
-> Перед первым запуском в Firefox/WebKit установите браузеры: `npx playwright install`.
+> Перед первым запуском в Firefox/WebKit установите браузеры: `npx playwright install`
 
 ## Отчёт
-
-После прогона открыть HTML-отчёт:
 
 ```bash
 npx playwright show-report
 ```
 
-Просмотреть трейс упавшего теста:
+Показать trace упавшего теста:
 
 ```bash
 npx playwright show-trace test-results/<имя-теста>/trace.zip
@@ -165,30 +192,66 @@ npx playwright show-trace test-results/<имя-теста>/trace.zip
 
 ## Проекты (projects)
 
-Конфигурация делит тесты на логические группы:
+В `playwright.config.ts` настроены отдельные группы:
 
-| Проект            | Назначение                                                               |
-| ----------------- | ------------------------------------------------------------------------ |
-| `setup`           | Создаёт пользователя через API и сохраняет состояние в `.auth/user.json` |
-| `auth-{browser}`  | Тесты для авторизованного пользователя (зависит от `setup`)              |
-| `guest-{browser}` | Тесты для гостя: регистрация, логин, главная страница, корзина           |
+| Проект | Назначение |
+| --- | --- |
+| `setup` | Создаёт пользователя через API и сохраняет `.auth/user.json` |
+| `api` | API-тесты: регистрация, логин, адреса, корзина и т.д. |
+| `auth-{browser}` | UI тесты для авторизованного пользователя |
+| `guest-{browser}` | UI тесты для гостя |
 
 `{browser}` — один из `chromium`, `firefox`, `webkit`.
 
 ## Полезные команды
 
 ```bash
-# Интерактивная генерация кода
-npm run codegen
+# Открыть UI-report
+npm run test:report
 
-# Список всех тестов без запуска
+# Показать список всех тестов без запуска
 npm run test:list
 
-# Открыть HTML-отчёт
-npm run test:report
+# Сгенерировать Playwright codegen
+npm run codegen
 ```
 
 ## Примечания
 
-- Перед запуском убедитесь, что приложение отвечает на `http://localhost:3000` — иначе проект `setup` упадёт с ошибкой `ECONNREFUSED`.
-- Состояние авторизации хранится в `.auth/user.json` (создаётся автоматически, добавлено в `.gitignore`).
+- Перед запуском убедитесь, что приложение отвечает на `http://localhost:3000`.
+- Состояние авторизации хранится в `.auth/user.json` и создаётся автоматически.
+- API тесты работают отдельно от UI-проектов и не зависят от `storageState`.
+- Для успешной регистрации через API удобно использовать helper `createUser()` из [helpers/api/register-user-api.helper.ts](helpers/api/register-user-api.helper.ts).
+
+## Типовой сценарий API теста
+
+```ts
+const response = await request.post(`${baseURL}/api/Users`, {
+  data: {
+    email: "test@example.com",
+    password: "Pass!123",
+    securityQuestion: { id: 1 },
+  },
+});
+
+expect(response.status()).toBe(201);
+expect(response.ok()).toBeTruthy();
+
+const body = await response.json();
+expect(body).not.toHaveProperty("errors");
+```
+
+## Типовой сценарий проверки validation error
+
+```ts
+const body = await response.json();
+
+expect(body.errors).toEqual(
+  expect.arrayContaining([
+    expect.objectContaining({
+      field: "email",
+      message: expect.stringContaining("unique"),
+    }),
+  ]),
+);
+```
