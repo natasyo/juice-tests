@@ -1,27 +1,16 @@
 {
-  "cookies": [
-    {
-      "name": "language",
-      "value": "en",
-      "domain": "localhost",
-      "path": "/",
-      "expires": 1820392414,
-      "httpOnly": false,
-      "secure": false,
-      "sameSite": "Lax"
-    }
-  ],
+  "cookies": [],
   "origins": [
     {
       "origin": "http://localhost:3000",
       "localStorage": [
         {
           "name": "token",
-          "value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJkYXRhIjp7ImlkIjoxMDAsInVzZXJuYW1lIjoiIiwiZW1haWwiOiIxNzg4ODU2NDExNzU2LUR1bmNhbi5XaGl0ZTk2QGdtYWlsLmNvbSIsInBhc3N3b3JkIjoiYTA3MThjOTZlYzUyZmQ0MWZjNDVlM2U2ZTk3MTg4ODUiLCJyb2xlIjoiY3VzdG9tZXIiLCJkZWx1eGVUb2tlbiI6IiIsImxhc3RMb2dpbklwIjoiMC4wLjAuMCIsInByb2ZpbGVJbWFnZSI6Ii9hc3NldHMvcHVibGljL2ltYWdlcy91cGxvYWRzL2RlZmF1bHQuc3ZnIiwidG90cFNlY3JldCI6IiIsImlzQWN0aXZlIjp0cnVlLCJjcmVhdGVkQXQiOiIyMDI2LTA5LTA4IDA4OjMzOjMxLjg0NiArMDA6MDAiLCJ1cGRhdGVkQXQiOiIyMDI2LTA5LTA4IDA4OjMzOjMxLjg0NiArMDA6MDAiLCJkZWxldGVkQXQiOm51bGx9LCJiaWQiOjQ2LCJpYXQiOjE3ODg4NTY0MTR9.lPrl8pDqRFVoiAEJXYP0GT5tDLIU_o1QTStIfhdbzPaXcYU3eFqPu_5NtjZIIjeDZ7C2Im9KlQplaC70HZ54XrlJPzqOWRhwawDvefRDiJqChcZOUZs0v2WGHx5o53v_G16P6px0LdTupCxKiiff-xbGKtDm5H7n49rlYFG2MqY"
+          "value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJkYXRhIjp7ImlkIjozNywidXNlcm5hbWUiOiIiLCJlbWFpbCI6IjE3ODg5NDYxOTQ4MzEtUm9kbmV5NUBnbWFpbC5jb20iLCJwYXNzd29yZCI6ImEwNzE4Yzk2ZWM1MmZkNDFmYzQ1ZTNlNmU5NzE4ODg1Iiwicm9sZSI6ImN1c3RvbWVyIiwiZGVsdXhlVG9rZW4iOiIiLCJsYXN0TG9naW5JcCI6IjAuMC4wLjAiLCJwcm9maWxlSW1hZ2UiOiIvYXNzZXRzL3B1YmxpYy9pbWFnZXMvdXBsb2Fkcy9kZWZhdWx0LnN2ZyIsInRvdHBTZWNyZXQiOiIiLCJpc0FjdGl2ZSI6dHJ1ZSwiY3JlYXRlZEF0IjoiMjAyNi0wOS0wOSAwOToyOTo1NC45MzcgKzAwOjAwIiwidXBkYXRlZEF0IjoiMjAyNi0wOS0wOSAwOToyOTo1NC45MzcgKzAwOjAwIiwiZGVsZXRlZEF0IjpudWxsfSwiYmlkIjo5LCJpYXQiOjE3ODg5NDYxOTZ9.yFreLBfPPp4rrqFMlde6kww8IacqXnl7gHu2P5aKo77N5BCl-No3zfp2sfnoWYAANjYyvBzKLM75f4qvJxSatGCirQXUtd4cXgqC1wIeO7smT73WgZBpNkY0layHT9Ybol8_MauKP96iXbndLKuLQuzA7nLAVBQYCY57UgnOEOA"
         },
         {
           "name": "email",
-          "value": "1788856411756-Duncan.White96@gmail.com"
+          "value": "1788946194831-Rodney5@gmail.com"
         }
       ]
     }

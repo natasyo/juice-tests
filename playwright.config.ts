@@ -47,18 +47,25 @@ export default defineConfig({
       name: "setup",
       testMatch: "setup/auth.setup.ts",
     },
+    {
+      name: "api",
+      testMatch: [/tests\/api\/.*\.spec\.(ts|js)$/],
+      use: {
+        baseURL: "http://localhost:3000",
+      },
+    },
     ...browsers.flatMap(({ name, use }) => [
       {
         name: `auth-${name}`,
         use: { ...use, storageState: ".auth/user.json" },
         dependencies: ["setup"],
-        testIgnore: [/guest\/.*\.spec\.(ts|js)$/],
+        testIgnore: [/guest\/.*\.spec\.(ts|js)$/, /tests\/api\/.*\.spec\.(ts|js)$/],
       },
       {
         name: `guest-${name}`,
         use,
-        // testMatch: [/guest\/(auth|register|profile|basket).*\.spec\.(ts|js)$/],
         testMatch: [/guest\/.*\.spec\.(ts|js)$/],
+        testIgnore: [/tests\/api\/.*\.spec\.(ts|js)$/],
       },
     ]),
     // {
