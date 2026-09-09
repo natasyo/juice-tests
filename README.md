@@ -3,6 +3,7 @@
 Автотесты для [OWASP Juice Shop](https://owasp.org/www-project-juice-shop/) на базе [Playwright Test](https://playwright.dev/).
 
 В проекте уже есть:
+
 - UI E2E тесты для авторизованного и гостевого сценариев
 - API тесты для регистрации и других endpoint-ов
 - подготовка auth state через API (`setup/auth.setup.ts`)
@@ -164,6 +165,7 @@ npm run format:check
 ## Запуск в нескольких браузерах
 
 По умолчанию проект запускает тесты в браузерах:
+
 - Chromium
 - Firefox
 - WebKit
@@ -194,12 +196,12 @@ npx playwright show-trace test-results/<имя-теста>/trace.zip
 
 В `playwright.config.ts` настроены отдельные группы:
 
-| Проект | Назначение |
-| --- | --- |
-| `setup` | Создаёт пользователя через API и сохраняет `.auth/user.json` |
-| `api` | API-тесты: регистрация, логин, адреса, корзина и т.д. |
-| `auth-{browser}` | UI тесты для авторизованного пользователя |
-| `guest-{browser}` | UI тесты для гостя |
+| Проект            | Назначение                                                   |
+| ----------------- | ------------------------------------------------------------ |
+| `setup`           | Создаёт пользователя через API и сохраняет `.auth/user.json` |
+| `api`             | API-тесты: регистрация, логин, адреса, корзина и т.д.        |
+| `auth-{browser}`  | UI тесты для авторизованного пользователя                    |
+| `guest-{browser}` | UI тесты для гостя                                           |
 
 `{browser}` — один из `chromium`, `firefox`, `webkit`.
 
