@@ -17,7 +17,7 @@ jobs:
       - name: Cache Playwright browsers
         uses: actions/cache@v4
         with:
-          path: ~/.cache/ms-playwright
+          path: ${{ github.workspace }}/.playwright-browsers
           key: playwright-${{ runner.os }}-${{ hashFiles('**/package-lock.json') }}
           restore-keys: playwright-${{ runner.os }}-
 
@@ -39,8 +39,12 @@ jobs:
 
       - name: Install Playwright Browsers
         run: npx playwright install --with-deps
+        env:
+          PLAYWRIGHT_BROWSERS_PATH: ${{ github.workspace }}/.playwright-browsers
       - name: Run Playwright tests
         run: npx playwright test
+        env:
+          PLAYWRIGHT_BROWSERS_PATH: ${{ github.workspace }}/.playwright-browsers
       - uses: actions/upload-artifact@v4
         if: ${{ !cancelled() }}
         with:
