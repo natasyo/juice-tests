@@ -36,6 +36,6 @@ export class AddressSelectPage extends BasePage {
   }
 
   async continueToDeliveryMethod() {
-    await this.continueButton.click();
+    await this.continueButton.click({ noWaitAfter: true });
   }
 }

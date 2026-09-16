@@ -42,7 +42,7 @@ export class DeliveryPage extends BasePage {
   }
 
   async continueToPayment() {
-    await this.continueButton.click();
+    await this.continueButton.click({ noWaitAfter: true });
   }
 
   async goBack() {

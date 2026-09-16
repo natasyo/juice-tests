@@ -63,7 +63,7 @@ export abstract class BasePage {
       // banner / cookie may be absent — ignore
     }
   }
-  async getCountProductInPage() {
+  async getCountProductInBasket() {
     return Number(await this.countProductsInCart.innerText());
   }
 }

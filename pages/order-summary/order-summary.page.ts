@@ -56,6 +56,6 @@ export class OrderSummaryPage extends BasePage {
   }
 
   async placeOrder() {
-    await this.placeOrderButton.click();
+    await this.placeOrderButton.click({ noWaitAfter: true });
   }
 }

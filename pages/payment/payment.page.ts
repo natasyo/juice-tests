@@ -62,7 +62,7 @@ export class PaymentPage extends BasePage {
   }
 
   async continueToReview() {
-    await this.continueButton.click();
+    await this.continueButton.click({ noWaitAfter: true });
   }
 
   async goBack() {

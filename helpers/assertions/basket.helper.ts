@@ -74,25 +74,35 @@ export async function assertCompleteCheckout(
   paymentPage: PaymentPage,
   orderSummaryPage: OrderSummaryPage,
 ) {
-  await expect(page).toHaveURL(/address/i);
+  // Адрес доставки (#/address/select)
+  await expect(addressSelectPage.heading).toBeVisible({ timeout: 15_000 });
   await expect(addressSelectPage.continueButton).toBeDisabled();
   await addressSelectPage.selectAddress();
   await expect(addressSelectPage.continueButton).toBeEnabled();
   await addressSelectPage.continueToDeliveryMethod();
-  await expect(page).toHaveURL(/delivery/i);
+
+  // Способ/скорость доставки (#/delivery-method)
+  await expect(deliveryPage.deliveryAddressHeading).toBeVisible({ timeout: 15_000 });
   await expect(deliveryPage.continueButton).toBeDisabled();
   await deliveryPage.selectDeliverySpeed(1); // Fast Delivery
   await expect(deliveryPage.continueButton).toBeEnabled();
   await deliveryPage.continueToPayment();
-  await expect(page).toHaveURL(/payment/i);
+
+  // Способ оплаты (#/payment/shop)
+  await expect(paymentPage.heading).toBeVisible({ timeout: 15_000 });
   await expect(paymentPage.continueButton).toBeDisabled();
   await paymentPage.selectCard(0); // выбрать карту
   await expect(paymentPage.continueButton).toBeEnabled();
   await paymentPage.continueToReview(); // → просмотр заказа
-  await expect(page).toHaveURL(/order-summary/i);
-  await expect(orderSummaryPage.placeOrderButton).toBeVisible();
+
+  // Просмотр заказа (#/order-summary)
+  await expect(orderSummaryPage.placeOrderButton).toBeVisible({ timeout: 15_000 });
   // Итог зависит от цены товара и выбранной доставки — проверяем формат валюты.
   await expect(orderSummaryPage.totalPrice).toHaveText(/^\d+\.\d{2}¤$/);
   await orderSummaryPage.placeOrder(); // → оформление/оплата заказа
-  await expect(page).toHaveURL(/order-completion/i);
+
+  // Завершение заказа (#/order-completion)
+  await expect(page.getByRole("heading", { name: /thank you for your purchase/i })).toBeVisible({
+    timeout: 15_000,
+  });
 }
