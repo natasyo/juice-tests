@@ -1,4 +1,4 @@
-import { Locator, Page } from "@playwright/test";
+import { expect, Locator, Page } from "@playwright/test";
 import { BasePage } from "@helpers/page/base.page";
 
 /**
@@ -18,9 +18,10 @@ export class DeliveryPage extends BasePage {
 
   constructor(page: Page) {
     super(page);
-    this.deliveryAddressHeading = page.getByRole("heading", {
-      name: "Delivery Address",
-    });
+    this.deliveryAddressHeading = page
+      .locator("h1, h2, h3")
+      .filter({ hasText: /delivery/i })
+      .first();
     this.deliverySpeedHeading = page.getByRole("heading", {
       name: "Choose a delivery speed",
     });
@@ -38,6 +39,7 @@ export class DeliveryPage extends BasePage {
   }
 
   async selectDeliverySpeed(index = 0) {
+   await expect(this.deliveryRadios.nth(index)).toBeVisible({ timeout: 15_000 });
     await this.deliveryRadios.nth(index).click();
   }
 

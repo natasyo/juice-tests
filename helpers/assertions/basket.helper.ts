@@ -23,7 +23,7 @@ export async function assertTotalPrice(basketPage: BasketBasePage, productPage: 
   await assertAddToBasketIncreasesCount(productPage, 1);
   await productPage.cartBtn.click();
   await expect(basketPage.basketHeader).toBeVisible();
-  const count = await basketPage.getCountProductInPage();
+  const count = await basketPage.getCountProductInBasket();
   if (count > 0) {
     await expect
       .poll(async () => await basketPage.rowItems.count(), {
@@ -34,7 +34,7 @@ export async function assertTotalPrice(basketPage: BasketBasePage, productPage: 
 
     const sum = await basketPage.getTotalCountProducts();
     expect
-      .poll(async () => await basketPage.getCountProductInPage(), {
+      .poll(async () => await basketPage.getCountProductInBasket(), {
         timeout: 15000,
         intervals: [1000, 1000],
       })
@@ -80,6 +80,7 @@ export async function assertCompleteCheckout(
   await addressSelectPage.selectAddress();
   await expect(addressSelectPage.continueButton).toBeEnabled();
   await addressSelectPage.continueToDeliveryMethod();
+  await expect(page).toHaveURL(/#\/delivery-method/i, { timeout: 15_000 });
 
   // Способ/скорость доставки (#/delivery-method)
   await expect(deliveryPage.deliveryAddressHeading).toBeVisible({ timeout: 15_000 });
@@ -105,4 +106,5 @@ export async function assertCompleteCheckout(
   await expect(page.getByRole("heading", { name: /thank you for your purchase/i })).toBeVisible({
     timeout: 15_000,
   });
+
 }

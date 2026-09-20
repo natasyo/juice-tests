@@ -53,6 +53,23 @@ test.describe("Register API", () => {
         }),
       ]),
     );
-    console.log("Response status:", await response.text());
+  });
+
+  test("should fail to register a user with an invalid email", async ({ request, baseURL }) => {
+    const user = generateRegisterData({ email: "invalid-email" });
+    const response = await request.post(`${baseURL}/api/Users`, {
+      data: {
+        ...user,
+      },
+    });
+    expect(response.status()).toBe(400);
+    const text = await response.text();
+    let body;
+    try {
+      body = JSON.parse(text);
+    } catch {
+      throw new Error(`Response is not valid JSON: ${text}`);
+    }
+    expect(body).toHaveProperty("errors");
   });
 });
