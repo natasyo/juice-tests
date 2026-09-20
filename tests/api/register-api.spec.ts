@@ -77,7 +77,7 @@ test.describe("Register API", () => {
     expect(body).toHaveProperty("errors");
   });
 
-  test.fail("should reject a password shorter than 5 characters", async ({ request, baseURL }) => {
+  test("should reject a password shorter than 5 characters", async ({ request, baseURL }) => {
     test.info().annotations.push({
       type: "issue",
       description: "https://github.com/natasyo/juice-tests/issues/3",
@@ -109,7 +109,7 @@ test.describe("Register API", () => {
     );
   });
 
-  test.fail("should reject a password longer than 40 characters", async ({ request, baseURL }) => {
+  test("should reject a password longer than 40 characters", async ({ request, baseURL }) => {
     test.info().annotations.push({
       type: "issue",
       description: "https://github.com/natasyo/juice-tests/issues/3",
@@ -177,7 +177,7 @@ test.describe("Register API", () => {
     expect(body).toContain("cannot be empty");
   });
 
-  test.fail("should reject mismatched passwordRepeat", async ({ request, baseURL }) => {
+  test("should reject mismatched passwordRepeat", async ({ request, baseURL }) => {
     test.info().annotations.push({
       type: "issue",
       description: "https://github.com/natasyo/juice-tests/issues/3",
@@ -198,7 +198,7 @@ test.describe("Register API", () => {
     expect(response.status()).toBe(400);
   });
 
-  test.fail("should reject registration without securityQuestion", async ({ request, baseURL }) => {
+  test("should reject registration without securityQuestion", async ({ request, baseURL }) => {
     test.info().annotations.push({
       type: "issue",
       description: "https://github.com/natasyo/juice-tests/issues/3",
