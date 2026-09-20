@@ -77,7 +77,11 @@ test.describe("Register API", () => {
     expect(body).toHaveProperty("errors");
   });
 
-  test("should reject a password shorter than 5 characters", async ({ request, baseURL }) => {
+  test.fail("should reject a password shorter than 5 characters", async ({ request, baseURL }) => {
+    test.info().annotations.push({
+      type: "issue",
+      description: "https://github.com/natasyo/juice-tests/issues/3",
+    });
     const user = generateRegisterData({ password: "1234" });
 
     const response = await request.post(`${baseURL}/api/Users`, {
@@ -100,6 +104,38 @@ test.describe("Register API", () => {
         expect.objectContaining({
           field: "password",
           message: expect.stringContaining("5"),
+        }),
+      ]),
+    );
+  });
+
+  test.fail("should reject a password longer than 40 characters", async ({ request, baseURL }) => {
+    test.info().annotations.push({
+      type: "issue",
+      description: "https://github.com/natasyo/juice-tests/issues/3",
+    });
+    const user = generateRegisterData({ password: "a".repeat(41) });
+
+    const response = await request.post(`${baseURL}/api/Users`, {
+      data: {
+        email: user.email,
+        password: user.password,
+        passwordRepeat: user.repeatPassword,
+        securityQuestion: { id: 1 },
+        securityAnswer: user.securityAnswer,
+      },
+    });
+
+    // Ожидается 400 Bad Request с ошибкой о максимальной длине пароля.
+    expect(response.status()).toBe(400);
+
+    const body = await response.json();
+    expect(body).toHaveProperty("errors");
+    expect(body.errors).toEqual(
+      expect.arrayContaining([
+        expect.objectContaining({
+          field: "password",
+          message: expect.stringContaining("40"),
         }),
       ]),
     );

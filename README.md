@@ -9,6 +9,14 @@
 - подготовка auth state через API (`setup/auth.setup.ts`)
 - общие helper-ы для API и assertions
 
+## Найденные дефекты
+
+Автотесты нашли реальный дефект валидации длины пароля — см. [issue #3](https://github.com/natasyo/juice-tests/issues/3).
+
+- UI блокирует пароли короче 5 и длиннее 40 символов.
+- API (`POST /api/Users`) принимает такие пароли и возвращает `201 Created`.
+- Тесты, фиксирующие дефект, помечены `test.fail()` и содержат ссылку на issue.
+
 ## Требования
 
 - Node.js 18+

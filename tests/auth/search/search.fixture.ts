@@ -6,13 +6,20 @@ type SearchFixtures = {
   searchPage: SearchPage;
 };
 
-const sessionState = JSON.parse(fs.readFileSync(".auth/session.json", "utf-8"));
-
 const COLLAPSED_MAX_WIDTH = 10;
 const EXPANDED_MIN_WIDTH = 10;
 
 export const test = base.extend<SearchFixtures>({
   searchPage: async ({ page }, use) => {
+    // Файл создаётся проектом `setup` (см. dependencies в playwright.config.ts),
+    // поэтому читаем его лениво внутри fixture, а не при загрузке модуля.
+    if (!fs.existsSync(".auth/session.json")) {
+      throw new Error(
+        ".auth/session.json не найден. Убедитесь, что проект `setup` выполнен перед этим тестом.",
+      );
+    }
+    const sessionState = JSON.parse(fs.readFileSync(".auth/session.json", "utf-8"));
+
     await page.addInitScript((bid) => {
       sessionStorage.setItem("bid", String(bid));
     }, sessionState.bid);
