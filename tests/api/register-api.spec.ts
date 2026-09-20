@@ -140,4 +140,81 @@ test.describe("Register API", () => {
       ]),
     );
   });
+
+  test("should reject an empty email", async ({ request, baseURL }) => {
+    const user = generateRegisterData({ email: "" });
+
+    const response = await request.post(`${baseURL}/api/Users`, {
+      data: {
+        email: user.email,
+        password: user.password,
+        passwordRepeat: user.repeatPassword,
+        securityQuestion: { id: 1 },
+        securityAnswer: user.securityAnswer,
+      },
+    });
+
+    expect(response.status()).toBe(400);
+    const body = await response.text();
+    expect(body).toContain("cannot be empty");
+  });
+
+  test("should reject an empty password", async ({ request, baseURL }) => {
+    const user = generateRegisterData({ password: "" });
+
+    const response = await request.post(`${baseURL}/api/Users`, {
+      data: {
+        email: user.email,
+        password: user.password,
+        passwordRepeat: user.repeatPassword,
+        securityQuestion: { id: 1 },
+        securityAnswer: user.securityAnswer,
+      },
+    });
+
+    expect(response.status()).toBe(400);
+    const body = await response.text();
+    expect(body).toContain("cannot be empty");
+  });
+
+  test.fail("should reject mismatched passwordRepeat", async ({ request, baseURL }) => {
+    test.info().annotations.push({
+      type: "issue",
+      description: "https://github.com/natasyo/juice-tests/issues/3",
+    });
+    const user = generateRegisterData({ password: "Pass!123", repeatPassword: "Different!123" });
+
+    const response = await request.post(`${baseURL}/api/Users`, {
+      data: {
+        email: user.email,
+        password: user.password,
+        passwordRepeat: user.repeatPassword,
+        securityQuestion: { id: 1 },
+        securityAnswer: user.securityAnswer,
+      },
+    });
+
+    // Ожидается 400 Bad Request: passwordRepeat не совпадает с password.
+    expect(response.status()).toBe(400);
+  });
+
+  test.fail("should reject registration without securityQuestion", async ({ request, baseURL }) => {
+    test.info().annotations.push({
+      type: "issue",
+      description: "https://github.com/natasyo/juice-tests/issues/3",
+    });
+    const user = generateRegisterData();
+
+    const response = await request.post(`${baseURL}/api/Users`, {
+      data: {
+        email: user.email,
+        password: user.password,
+        passwordRepeat: user.repeatPassword,
+        securityAnswer: user.securityAnswer,
+      },
+    });
+
+    // Ожидается 400 Bad Request: securityQuestion — обязательное поле.
+    expect(response.status()).toBe(400);
+  });
 });
