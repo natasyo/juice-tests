@@ -101,4 +101,12 @@ test.describe("Login API", () => {
     // Ожидается 400 Bad Request: email имеет невалидный формат.
     expect(response.status()).toBe(400);
   });
+
+  test("should fail to login with an empty data", async ({ request, baseURL }) => {
+    const response = await request.post(`${baseURL}/rest/user/login`, {
+      data: {},
+    });
+
+    expect(response.status()).toBe(401);
+  });
 });
