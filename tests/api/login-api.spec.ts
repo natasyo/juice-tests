@@ -21,6 +21,42 @@ test.describe("Login API", () => {
     expect(body.authentication.token).toBeTruthy();
   });
 
+  test("should issue a new token on repeated login for the same user", async ({
+    request,
+    baseURL,
+  }) => {
+    const user = await createUser(request, baseURL);
+
+    const firstLogin = await request.post(`${baseURL}/rest/user/login`, {
+      data: {
+        email: user.email,
+        password: user.password,
+      },
+    });
+
+    expect(firstLogin.status()).toBe(200);
+    const firstBody = await firstLogin.json();
+    const firstToken = firstBody.authentication.token;
+    const firstBid = firstBody.authentication.bid;
+
+    const secondLogin = await request.post(`${baseURL}/rest/user/login`, {
+      data: {
+        email: user.email,
+        password: user.password,
+      },
+    });
+
+    expect(secondLogin.status()).toBe(200);
+    const secondBody = await secondLogin.json();
+    const secondToken = secondBody.authentication.token;
+    const secondBid = secondBody.authentication.bid;
+
+    expect(firstBody.authentication.umail).toBe(user.email);
+    expect(secondBody.authentication.umail).toBe(user.email);
+    expect(firstBid).toBe(secondBid);
+    expect(secondToken).not.toBe(firstToken);
+  });
+
   test("should fail to login with a non-existent email", async ({ request, baseURL }) => {
     const response = await request.post(`${baseURL}/rest/user/login`, {
       data: {
