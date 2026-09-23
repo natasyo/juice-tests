@@ -1,0 +1,14 @@
+{
+  "name": "juice-shop-load-tests",
+  "version": "1.0.0",
+  "description": "Нагрузочное тестирование Juice Shop на k6",
+  "private": true,
+  "scripts": {
+    "smoke": "k6 run src/scenarios/smoke.ts",
+    "load": "k6 run src/scenarios/load.ts",
+    "stress": "k6 run src/scenarios/stress.ts"
+  },
+  "devDependencies": {
+    "@types/k6": "^0.54.0"
+  }
+}
