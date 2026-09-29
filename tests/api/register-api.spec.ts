@@ -214,7 +214,6 @@ test.describe("Register API", () => {
       },
     });
 
-    // Ожидается 400 Bad Request: securityQuestion — обязательное поле.
     expect(response.status()).toBe(400);
   });
 });
