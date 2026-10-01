@@ -35,7 +35,7 @@ test.describe("Login API", () => {
         password: user.password,
       },
     });
-expect(firstLogin.headers()["content-type"]).toContain("application/json");
+    expect(firstLogin.headers()["content-type"]).toContain("application/json");
     expect(firstLogin.status()).toBe(200);
     const firstBody = await firstLogin.json();
     const firstToken = firstBody.authentication.token;
@@ -50,7 +50,6 @@ expect(firstLogin.headers()["content-type"]).toContain("application/json");
 
     expect(secondLogin.status()).toBe(200);
     expect(secondLogin.headers()["content-type"]).toContain("application/json");
-    expect(secondLogin.headers()["content-type"]).toContain("application/json")
     const secondBody = await secondLogin.json();
     const secondToken = secondBody.authentication.token;
     const secondBid = secondBody.authentication.bid;
