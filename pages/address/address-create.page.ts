@@ -17,6 +17,7 @@ export class AddressCreatePage extends BasePage {
 
   readonly backButton: Locator;
   readonly submitButton: Locator;
+  readonly successToast: Locator;
 
   constructor(page: Page) {
     super(page);
@@ -31,6 +32,7 @@ export class AddressCreatePage extends BasePage {
 
     this.backButton = page.getByRole("button", { name: "Back" });
     this.submitButton = page.getByRole("button", { name: "Submit" });
+    this.successToast = page.getByText(/successfully added to your addresses/i);
   }
 
   async open() {
