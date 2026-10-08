@@ -53,6 +53,14 @@ test.describe("Address", () => {
         message: "should submitButton disabled when only street address is empty",
         data: generateAddressData({ streetAddress: "" }),
       },
+      {
+        message: "should submitButton disabled when mobile number is not valid (In short, 7)",
+        data: generateAddressData({ streetAddress: "999999" }),
+      },
+      {
+        message: "should submitButton disabled when mobile number is not valid (longer than 10)",
+        data: generateAddressData({ streetAddress: "12345678901" }),
+      },
     ];
     for (const { message, data } of tests) {
       test(message, async ({ createAddressPage }) => {
