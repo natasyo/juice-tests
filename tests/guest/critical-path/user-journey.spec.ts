@@ -1,4 +1,5 @@
 import { generateRegisterData } from "@data/register.data";
+import { assertAddToBasketIncreasesCount } from "@helpers/assertions/basket.helper";
 import { LoginPage } from "@pages/login/login.page";
 import { RegisterPage } from "@pages/register/register.page";
 import { SearchPage } from "@pages/search/search.page";
@@ -30,14 +31,20 @@ test.describe("User Journey", () => {
       await page.waitForURL("#/search", { timeout: 15000 });
       await expect(page).toHaveURL("#/search");
     });
+    const searchPage = new SearchPage(page);
     await test.step("Search for a product", async () => {
-      const searchPage = new SearchPage(page);
       await expect
         .poll(async () => await searchPage.product.count(), {
           timeout: 15000,
           intervals: [1000, 1000],
         })
         .toBeGreaterThan(0);
+      await assertAddToBasketIncreasesCount(searchPage, 0);
+      await assertAddToBasketIncreasesCount(searchPage, 1);
+    });
+    await test.step("Place an order", async () => {
+      await searchPage.cartBtn.click();
+      await expect(page).toHaveURL("#/basket");
     });
   });
 });

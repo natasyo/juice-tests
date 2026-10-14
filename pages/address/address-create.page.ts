@@ -15,6 +15,13 @@ export class AddressCreatePage extends BasePage {
   readonly cityInput: Locator;
   readonly stateInput: Locator;
 
+  readonly countryError: Locator;
+  readonly nameError: Locator;
+  readonly mobileNumberError: Locator;
+  readonly zipCodeError: Locator;
+  readonly addressError: Locator;
+  readonly cityError: Locator;
+
   readonly backButton: Locator;
   readonly submitButton: Locator;
   readonly successToast: Locator;
@@ -30,6 +37,13 @@ export class AddressCreatePage extends BasePage {
     this.cityInput = page.getByLabel("City");
     this.stateInput = page.getByLabel("State");
 
+    this.countryError = this.fieldError(this.countryInput);
+    this.nameError = this.fieldError(this.nameInput);
+    this.mobileNumberError = this.fieldError(this.mobileNumberInput);
+    this.zipCodeError = this.fieldError(this.zipCodeInput);
+    this.addressError = this.fieldError(this.addressTextarea);
+    this.cityError = this.fieldError(this.cityInput);
+
     this.backButton = page.getByRole("button", { name: "Back" });
     this.submitButton = page.getByRole("button", { name: "Submit" });
     this.successToast = page.getByText(/successfully added to your addresses/i);
@@ -37,6 +51,16 @@ export class AddressCreatePage extends BasePage {
 
   async open() {
     await this.goTo(this.url);
+  }
+
+  /**
+   * mat-error рендерится внутри mat-form-field своего поля,
+   * поэтому поднимаемся от контрола к общему контейнеру поля.
+   */
+  private fieldError(control: Locator): Locator {
+    return control
+      .locator("xpath=ancestor::mat-form-field")
+      .locator("mat-error");
   }
 
   async fillAddressForm(data: AddressType) {

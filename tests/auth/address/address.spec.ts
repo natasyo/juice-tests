@@ -1,22 +1,15 @@
 import { generateAddressData } from "@data/address.data";
 import { test } from "./adress.fixture";
 import { expect } from "@playwright/test";
+import { assertCreateNewAddress } from "@helpers/assertions/address.helper";
 
 test.describe("Address", () => {
-  test("should create a new address", async ({ createAddressPage, savedAddressPage, page }) => {
-    const address = generateAddressData();
-    await createAddressPage.fillAddressForm(address);
-    expect(createAddressPage.submitButton).toBeEnabled();
-    await createAddressPage.submitButton.click();
-    await expect(page).toHaveURL(savedAddressPage.url);
-
-    // Находим добавленный адрес в таблице по имени
-    const newAddressRow = savedAddressPage.addressRows.filter({
-      hasText: address.fullName,
-    });
-    await expect(newAddressRow).toHaveCount(1);
-    await expect(newAddressRow.locator(".cdk-column-Address")).toContainText(address.streetAddress);
-    await expect(newAddressRow.locator(".cdk-column-Country")).toHaveText(address.country);
+  test("should create a new address @regression", async ({
+    createAddressPage,
+    savedAddressPage,
+    page,
+  }) => {
+    await assertCreateNewAddress(createAddressPage, savedAddressPage, page);
   });
 
   test.describe("@negative tests", () => {
@@ -50,16 +43,20 @@ test.describe("Address", () => {
         data: generateAddressData({ zipCode: "" }),
       },
       {
+        message: "should submitButton disabled when only zip code is longer than 8 symbols",
+        data: generateAddressData({ zipCode: "123456789" }),
+      },
+      {
         message: "should submitButton disabled when only street address is empty",
         data: generateAddressData({ streetAddress: "" }),
       },
       {
         message: "should submitButton disabled when mobile number is not valid (In short, 7)",
-        data: generateAddressData({ streetAddress: "999999" }),
+        data: generateAddressData({ mobileNum: 999999 }),
       },
       {
         message: "should submitButton disabled when mobile number is not valid (longer than 10)",
-        data: generateAddressData({ streetAddress: "12345678901" }),
+        data: generateAddressData({ mobileNum: 123456789011 }),
       },
     ];
     for (const { message, data } of tests) {
