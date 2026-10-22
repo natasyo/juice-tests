@@ -58,6 +58,7 @@ export async function checkOneProductInBasket(
   await productPage.open();
   await assertAddToBasketIncreasesCount(productPage);
   await productPage.cartBtn.click();
+
   await expect(basketPage.basketHeader).toBeVisible();
   const quantityText = await basketPage.rowItems
     .locator(".cdk-column-quantity span.cell-initial-font")
@@ -106,5 +107,4 @@ export async function assertCompleteCheckout(
   await expect(page.getByRole("heading", { name: /thank you for your purchase/i })).toBeVisible({
     timeout: 15_000,
   });
-
 }

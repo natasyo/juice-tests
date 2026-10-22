@@ -1,5 +1,6 @@
 import { generateRegisterData } from "@data/register.data";
 import { assertAddToBasketIncreasesCount } from "@helpers/assertions/basket.helper";
+import { BasketPage } from "@pages/basket/basket.page";
 import { LoginPage } from "@pages/login/login.page";
 import { RegisterPage } from "@pages/register/register.page";
 import { SearchPage } from "@pages/search/search.page";
@@ -42,9 +43,14 @@ test.describe("User Journey", () => {
       await assertAddToBasketIncreasesCount(searchPage, 0);
       await assertAddToBasketIncreasesCount(searchPage, 1);
     });
-    await test.step("Place an order", async () => {
+    await test.step("Checkout an order", async () => {
+      const basketPage = new BasketPage(page);
       await searchPage.cartBtn.click();
-      await expect(page).toHaveURL("#/basket");
+      await expect(page).toHaveURL(basketPage.url);
+      await expect(basketPage.checkoutBtn).toBeEnabled();
+      expect(await basketPage.rowItems.count()).toBeGreaterThan(0);
+      await searchPage.cartBtn.click();
     });
+    await test.step("creation and selection of an address", async () => {});
   });
 });
