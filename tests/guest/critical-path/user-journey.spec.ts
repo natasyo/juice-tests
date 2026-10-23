@@ -1,5 +1,6 @@
 import { generateRegisterData } from "@data/register.data";
 import { assertAddToBasketIncreasesCount } from "@helpers/assertions/basket.helper";
+import { AddressSelectPage } from "@pages/address/address-select.page";
 import { BasketPage } from "@pages/basket/basket.page";
 import { LoginPage } from "@pages/login/login.page";
 import { RegisterPage } from "@pages/register/register.page";
@@ -8,6 +9,7 @@ import test, { expect } from "@playwright/test";
 
 test.describe("User Journey", () => {
   test("should complete the critical path successfully", async ({ page }) => {
+    test.slow();
     const registerData = generateRegisterData();
     await test.step("Register a new user", async () => {
       const registerPage = new RegisterPage(page);
@@ -20,14 +22,14 @@ test.describe("User Journey", () => {
       await expect(page).toHaveURL(registerPage.loginUrl);
     });
 
-    test.step("Login with the newly registered user", async () => {
+    await test.step("Login with the newly registered user", async () => {
       const lognPage = new LoginPage(page);
       await lognPage.open();
       await lognPage.fillForm({
         email: registerData.email,
         password: registerData.password,
       });
-      await expect(lognPage.submitButton).toBeEnabled;
+      await expect(lognPage.submitButton).toBeEnabled();
       await lognPage.submitButton.click();
       await page.waitForURL("#/search", { timeout: 15000 });
       await expect(page).toHaveURL("#/search");
@@ -49,8 +51,12 @@ test.describe("User Journey", () => {
       await expect(page).toHaveURL(basketPage.url);
       await expect(basketPage.checkoutBtn).toBeEnabled();
       expect(await basketPage.rowItems.count()).toBeGreaterThan(0);
-      await searchPage.cartBtn.click();
+      await basketPage.checkoutBtn.click();
     });
-    await test.step("creation and selection of an address", async () => {});
+    await test.step("creation and selection of an address", async () => {
+      const addressSelectPage = new AddressSelectPage(page);
+      await page.waitForURL(addressSelectPage.url);
+      await expect(page).toHaveURL(addressSelectPage.url, { timeout: 15000 });
+    });
   });
 });
