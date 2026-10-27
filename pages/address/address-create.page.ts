@@ -58,9 +58,7 @@ export class AddressCreatePage extends BasePage {
    * поэтому поднимаемся от контрола к общему контейнеру поля.
    */
   private fieldError(control: Locator): Locator {
-    return control
-      .locator("xpath=ancestor::mat-form-field")
-      .locator("mat-error");
+    return control.locator("xpath=ancestor::mat-form-field").locator("mat-error");
   }
 
   async fillAddressForm(data: AddressType) {

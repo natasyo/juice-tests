@@ -1,4 +1,5 @@
 import { generateRegisterData } from "@data/register.data";
+import { assertCreateNewAddress } from "@helpers/assertions/address.helper";
 import { assertAddToBasketIncreasesCount } from "@helpers/assertions/basket.helper";
 import { AddressSelectPage } from "@pages/address/address-select.page";
 import { BasketPage } from "@pages/basket/basket.page";
@@ -6,6 +7,10 @@ import { LoginPage } from "@pages/login/login.page";
 import { RegisterPage } from "@pages/register/register.page";
 import { SearchPage } from "@pages/search/search.page";
 import test, { expect } from "@playwright/test";
+import { createAddress } from "@helpers/api/address-api.helper";
+import { AddressSavedPage } from "@pages/address/address-saved.page";
+import { AddressCreatePage } from "@pages/address/address-create.page";
+import { ADDRESS_SELECTED_ENDPOINT, DELIVERY_METHOD_ENDPOINT } from "@helpers/endpoints";
 
 test.describe("User Journey", () => {
   test("should complete the critical path successfully", async ({ page }) => {
@@ -56,7 +61,23 @@ test.describe("User Journey", () => {
     await test.step("creation and selection of an address", async () => {
       const addressSelectPage = new AddressSelectPage(page);
       await page.waitForURL(addressSelectPage.url);
-      await expect(page).toHaveURL(addressSelectPage.url, { timeout: 15000 });
+      await addressSelectPage.addNewAddressButton.click();
+      const createAddressPage = new AddressCreatePage(page);
+      await page.waitForURL(createAddressPage.url);
+      const savedAddressPage = new AddressSavedPage(page);
+      await assertCreateNewAddress(
+        createAddressPage,
+        savedAddressPage,
+        page,
+        ADDRESS_SELECTED_ENDPOINT,
+      );
+      await expect(addressSelectPage.continueButton).toBeDisabled();
+      await addressSelectPage.selectAddress();
+      await expect(addressSelectPage.continueButton).toBeEnabled();
+      await addressSelectPage.continueToDeliveryMethod();
+    });
+    await test.step("Choose delivery method", async () => {
+      await page.waitForURL(DELIVERY_METHOD_ENDPOINT);
     });
   });
 });

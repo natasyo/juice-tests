@@ -1,5 +1,6 @@
 import { Locator, Page } from "@playwright/test";
 import { BasePage } from "@helpers/page/base.page";
+import { ADDRESS_SELECTED_ENDPOINT } from "@helpers/endpoints";
 
 /**
  * Страница выбора адреса доставки (#/address/select).
@@ -7,7 +8,7 @@ import { BasePage } from "@helpers/page/base.page";
  * поэтому обычно `open()` вызывать не требуется — достаточно передать текущий `page`.
  */
 export class AddressSelectPage extends BasePage {
-  readonly url = "#/address/select";
+  readonly url = ADDRESS_SELECTED_ENDPOINT;
   readonly heading: Locator;
   readonly addressTable: Locator;
   readonly addressRows: Locator;
