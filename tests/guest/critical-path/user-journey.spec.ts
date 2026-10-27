@@ -1,16 +1,22 @@
 import { generateRegisterData } from "@data/register.data";
 import { assertCreateNewAddress } from "@helpers/assertions/address.helper";
-import { assertAddToBasketIncreasesCount } from "@helpers/assertions/basket.helper";
+import {
+  assertAddToBasketIncreasesCount,
+  assertSelectionDelivery,
+  assertSelectionPayment,
+} from "@helpers/assertions/basket.helper";
 import { AddressSelectPage } from "@pages/address/address-select.page";
 import { BasketPage } from "@pages/basket/basket.page";
 import { LoginPage } from "@pages/login/login.page";
 import { RegisterPage } from "@pages/register/register.page";
 import { SearchPage } from "@pages/search/search.page";
 import test, { expect } from "@playwright/test";
-import { createAddress } from "@helpers/api/address-api.helper";
 import { AddressSavedPage } from "@pages/address/address-saved.page";
 import { AddressCreatePage } from "@pages/address/address-create.page";
-import { ADDRESS_SELECTED_ENDPOINT, DELIVERY_METHOD_ENDPOINT } from "@helpers/endpoints";
+import { ADDRESS_SELECTED_ENDPOINT } from "@helpers/endpoints";
+import { DeliveryPage } from "@pages/delivery/delivery.page";
+import { PaymentPage } from "@pages/payment/payment.page";
+import { assertCreatePayment } from "@helpers/assertions/payment.helper";
 
 test.describe("User Journey", () => {
   test("should complete the critical path successfully", async ({ page }) => {
@@ -76,8 +82,13 @@ test.describe("User Journey", () => {
       await expect(addressSelectPage.continueButton).toBeEnabled();
       await addressSelectPage.continueToDeliveryMethod();
     });
-    await test.step("Choose delivery method", async () => {
-      await page.waitForURL(DELIVERY_METHOD_ENDPOINT);
+    await test.step("Selection of delivery method", async () => {
+      const deliveryPage = new DeliveryPage(page);
+      await assertSelectionDelivery(page, deliveryPage);
+    });
+    await test.step("creation and selection of payment method", async () => {
+      const paymentPage = new PaymentPage(page);
+      await assertCreatePayment(page, paymentPage);
     });
   });
 });

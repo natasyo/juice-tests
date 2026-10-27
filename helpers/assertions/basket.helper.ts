@@ -5,6 +5,7 @@ import { OrderSummaryPage } from "@pages/order-summary/order-summary.page";
 import { PaymentPage } from "@pages/payment/payment.page";
 import { DeliveryPage } from "@pages/delivery/delivery.page";
 import { AddressSelectPage } from "@pages/address/address-select.page";
+import { DELIVERY_METHOD_ENDPOINT, PAYMENT_ENDPOINT } from "@helpers/endpoints";
 
 export async function assertAddToBasketIncreasesCount(page: WithProductsPage, number = 0) {
   const before = await page.getBasketCount();
@@ -84,18 +85,10 @@ export async function assertCompleteCheckout(
   await expect(page).toHaveURL(/#\/delivery-method/i, { timeout: 15_000 });
 
   // Способ/скорость доставки (#/delivery-method)
-  await expect(deliveryPage.deliveryAddressHeading).toBeVisible({ timeout: 15_000 });
-  await expect(deliveryPage.continueButton).toBeDisabled();
-  await deliveryPage.selectDeliverySpeed(1); // Fast Delivery
-  await expect(deliveryPage.continueButton).toBeEnabled();
-  await deliveryPage.continueToPayment();
+  await assertSelectionDelivery(page, deliveryPage);
 
   // Способ оплаты (#/payment/shop)
-  await expect(paymentPage.heading).toBeVisible({ timeout: 15_000 });
-  await expect(paymentPage.continueButton).toBeDisabled();
-  await paymentPage.selectCard(0); // выбрать карту
-  await expect(paymentPage.continueButton).toBeEnabled();
-  await paymentPage.continueToReview(); // → просмотр заказа
+  await assertSelectionPayment(page, paymentPage);
 
   // Просмотр заказа (#/order-summary)
   await expect(orderSummaryPage.placeOrderButton).toBeVisible({ timeout: 15_000 });
@@ -107,4 +100,20 @@ export async function assertCompleteCheckout(
   await expect(page.getByRole("heading", { name: /thank you for your purchase/i })).toBeVisible({
     timeout: 15_000,
   });
+}
+
+export async function assertSelectionPayment(page: Page, paymentPage: PaymentPage) {
+  await page.waitForURL(PAYMENT_ENDPOINT);
+  await expect(paymentPage.continueButton).toBeDisabled();
+  await paymentPage.selectCard();
+  await expect(paymentPage.continueButton).toBeEnabled();
+  await paymentPage.continueToReview();
+}
+
+export async function assertSelectionDelivery(page: Page, deliveryPage: DeliveryPage) {
+  await page.waitForURL(DELIVERY_METHOD_ENDPOINT);
+  await expect(deliveryPage.continueButton).toBeDisabled();
+  await deliveryPage.selectDeliverySpeed();
+  await expect(deliveryPage.continueButton).toBeEnabled();
+  await deliveryPage.continueToPayment();
 }
