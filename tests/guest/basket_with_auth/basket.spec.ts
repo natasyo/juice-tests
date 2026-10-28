@@ -5,7 +5,8 @@ import {
   checkOneProductInBasket,
 } from "@helpers/assertions/basket.helper";
 import { test } from "@tests/guest/basket_with_auth/basket.fixture";
-import { createUser, loginWithApi } from "@helpers/api/register-user-api.helper";
+import { createUser } from "@helpers/api/register-user-api.helper";
+import { loginWithApi } from "@helpers/api/login-api.helper";
 import { createAddress } from "@helpers/api/address-api.helper";
 import { createCard } from "@helpers/api/card-api.helper";
 

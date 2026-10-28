@@ -16,6 +16,7 @@ import { ADDRESS_SELECTED_ENDPOINT } from "@helpers/endpoints";
 import { DeliveryPage } from "@pages/delivery/delivery.page";
 import { PaymentPage } from "@pages/payment/payment.page";
 import { assertCreatePayment } from "@helpers/assertions/payment.helper";
+import { OrderSummaryPage } from "@pages/order-summary/order-summary.page";
 
 test.describe("User Journey", () => {
   test("should complete the critical path successfully", async ({ page }) => {
@@ -24,9 +25,8 @@ test.describe("User Journey", () => {
     await test.step("Register a new user", async () => {
       const registerPage = new RegisterPage(page);
       await registerPage.open();
-      // Assuming you have a function to generate test data
       await registerPage.fillForm(registerData);
-      await expect(registerPage.submitButton).toBeEnabled;
+      await expect(registerPage.submitButton).toBeEnabled();
       await registerPage.submitButton.click();
       await page.waitForURL(registerPage.loginUrl, { timeout: 15000 });
       await expect(page).toHaveURL(registerPage.loginUrl);
@@ -60,7 +60,7 @@ test.describe("User Journey", () => {
       await searchPage.cartBtn.click();
       await expect(page).toHaveURL(basketPage.url);
       await expect(basketPage.checkoutBtn).toBeEnabled();
-      expect(await basketPage.rowItems.count()).toBeGreaterThan(0);
+      await expect(basketPage.rowItems).toHaveCount(2, { timeout: 15_000 });
       await basketPage.checkoutBtn.click();
     });
     await test.step("creation and selection of an address", async () => {
@@ -95,6 +95,14 @@ test.describe("User Journey", () => {
       await expect(paymentPage.continueButton).toBeEnabled();
       await paymentPage.continueToReview();
       await expect(page).toHaveURL("#/order-summary", { timeout: 15_000 });
+
+      const orderSummaryPage = new OrderSummaryPage(page);
+      await expect(orderSummaryPage.placeOrderButton).toBeVisible({ timeout: 15_000 });
+      await expect(orderSummaryPage.totalPrice).toHaveText(/^\d+\.\d{2}¤$/);
+      await orderSummaryPage.placeOrder();
+      await expect(page.getByRole("heading", { name: /thank you for your purchase/i })).toBeVisible(
+        { timeout: 15_000 },
+      );
     });
   });
 });

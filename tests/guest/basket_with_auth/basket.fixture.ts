@@ -4,7 +4,6 @@ import { MainPage } from "@pages/main/main.page";
 import { AddressSelectPage } from "@pages/address/address-select.page";
 import { DeliveryPage } from "@pages/delivery/delivery.page";
 import { PaymentPage } from "@pages/payment/payment.page";
-import { PaymentCreatePage } from "@pages/payment/payment-create.page";
 import { OrderSummaryPage } from "@pages/order-summary/order-summary.page";
 
 type BasketFixtureAuth = {
@@ -13,7 +12,6 @@ type BasketFixtureAuth = {
   addressSelectPage: AddressSelectPage;
   deliveryPage: DeliveryPage;
   paymentPage: PaymentPage;
-  paymentCreatePage: PaymentCreatePage;
   orderSummaryPage: OrderSummaryPage;
 };
 
@@ -37,10 +35,6 @@ export const test = base.extend<BasketFixtureAuth>({
   paymentPage: async ({ page }, use) => {
     const payment = new PaymentPage(page);
     await use(payment);
-  },
-  paymentCreatePage: async ({ page }, use) => {
-    const paymentCreate = new PaymentCreatePage(page);
-    await use(paymentCreate);
   },
   orderSummaryPage: async ({ page }, use) => {
     const orderSummary = new OrderSummaryPage(page);
