@@ -3,7 +3,6 @@ import { assertCreateNewAddress } from "@helpers/assertions/address.helper";
 import {
   assertAddToBasketIncreasesCount,
   assertSelectionDelivery,
-  assertSelectionPayment,
 } from "@helpers/assertions/basket.helper";
 import { AddressSelectPage } from "@pages/address/address-select.page";
 import { BasketPage } from "@pages/basket/basket.page";
@@ -89,6 +88,13 @@ test.describe("User Journey", () => {
     await test.step("creation and selection of payment method", async () => {
       const paymentPage = new PaymentPage(page);
       await assertCreatePayment(page, paymentPage);
+
+      // Выбираем только что добавленную карту и продолжаем к просмотру заказа
+      await expect(paymentPage.cardRadios).not.toHaveCount(0);
+      await paymentPage.selectCard((await paymentPage.cardRadios.count()) - 1);
+      await expect(paymentPage.continueButton).toBeEnabled();
+      await paymentPage.continueToReview();
+      await expect(page).toHaveURL("#/order-summary", { timeout: 15_000 });
     });
   });
 });
