@@ -138,10 +138,9 @@ test.describe("Basket items API", () => {
     const item = await addBasketItem(request, baseURL, session);
     const headers = { Authorization: `Bearer ${session.token}` };
 
-    const deleteResponse = await request.delete(
-      `${baseURL}${BASKET_ITEMS_ENDPOINT}${item.id}`,
-      { headers },
-    );
+    const deleteResponse = await request.delete(`${baseURL}${BASKET_ITEMS_ENDPOINT}${item.id}`, {
+      headers,
+    });
 
     expect(deleteResponse.status()).toBe(200);
     expect((await deleteResponse.json()).status).toBe("success");
